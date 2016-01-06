@@ -33,6 +33,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -66,10 +67,12 @@ public class K9TeleOp extends OpMode {
 	// amount to change the claw servo position by
 	double clawDelta = 0.1;
 
+	DcMotorController motorController;
 	DcMotor motorRight;
 	DcMotor motorLeft;
-	Servo claw;
-	Servo arm;
+	Thread thread;
+	// Servo claw;
+	// Servo arm;
 
 	/**
 	 * Constructor
@@ -103,16 +106,24 @@ public class K9TeleOp extends OpMode {
 		 *    "servo_1" controls the arm joint of the manipulator.
 		 *    "servo_6" controls the claw joint of the manipulator.
 		 */
-		motorRight = hardwareMap.dcMotor.get("motor_2");
-		motorLeft = hardwareMap.dcMotor.get("motor_1");
+		motorController = hardwareMap.dcMotorController.get("motorController");
+		motorRight = new DcMotor(motorController, 1);
+		motorLeft = new DcMotor(motorController, 2);
 		motorLeft.setDirection(DcMotor.Direction.REVERSE);
-		
+		/*
 		arm = hardwareMap.servo.get("servo_1");
 		claw = hardwareMap.servo.get("servo_6");
-
+		*/
 		// assign the starting position of the wrist and claw
 		armPosition = 0.2;
 		clawPosition = 0.2;
+		thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true)
+					loop();
+			}
+		});
 	}
 
 	/*
@@ -122,7 +133,6 @@ public class K9TeleOp extends OpMode {
 	 */
 	@Override
 	public void loop() {
-
 		/*
 		 * Gamepad 1
 		 * 
@@ -147,7 +157,7 @@ public class K9TeleOp extends OpMode {
 		// the robot more precisely at slower speeds.
 		right = (float)scaleInput(right);
 		left =  (float)scaleInput(left);
-		
+
 		// write the values to the motors
 		motorRight.setPower(right);
 		motorLeft.setPower(left);
@@ -179,8 +189,8 @@ public class K9TeleOp extends OpMode {
         clawPosition = Range.clip(clawPosition, CLAW_MIN_RANGE, CLAW_MAX_RANGE);
 
 		// write position values to the wrist and claw servo
-		arm.setPosition(armPosition);
-		claw.setPosition(clawPosition);
+		// arm.setPosition(armPosition);
+		// claw.setPosition(clawPosition);
 
 
 
