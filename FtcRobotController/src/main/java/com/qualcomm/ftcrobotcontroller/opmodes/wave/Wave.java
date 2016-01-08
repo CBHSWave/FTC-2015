@@ -7,9 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
  * Top Level class for all bot stuff, automatically loops
  */
 public abstract class Wave extends OpMode {
-    protected Thread loopThread;
-    protected boolean running;
-
     /**
      * Use to setup everything before entering loop
      */
@@ -18,18 +15,5 @@ public abstract class Wave extends OpMode {
     @Override
     public void init() {
         setup();
-        loopThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (running)
-                    loop();
-            }
-        });
-        loopThread.run();
-    }
-
-    @Override
-    public void stop() {
-        running = false;
     }
 }

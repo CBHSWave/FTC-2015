@@ -17,6 +17,7 @@ public abstract class WaveHardware extends Wave {
     @Override
     protected void setup() {
         motorController = getPart("motorController", hardwareMap.dcMotorController);
+        motorController.setMotorControllerDeviceMode(DcMotorController.DeviceMode.READ_WRITE);
         motorRight = new DcMotor(motorController, 1);
         motorLeft = new DcMotor(motorController, 2);
         motorLeft.setDirection(DcMotor.Direction.REVERSE);

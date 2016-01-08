@@ -35,8 +35,8 @@ public class WaveTele extends WaveTelemetry {
         left =  (float)scaleJoystick(left);
 
         // write the values to the motors
-        motorRight.setPower(right);
-        motorLeft.setPower(left);
+        setMotorRight(right);
+        setMotorLeft(left);
 
         // Use BotTelemetry loop to log data
         super.loop();
