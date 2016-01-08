@@ -9,21 +9,12 @@ import com.qualcomm.robotcore.util.Range;
 public class WaveTele extends WaveTelemetry {
     @Override
     public void loop() {
-        /*
-		 * Gamepad 1
-		 *
-		 * Gamepad 1 controls the motors via the left stick, and it controls the
-		 * wrist/claw via the a,b, x, y buttons
-		 */
-
         // throttle: left_stick_y ranges from -1 to 1, where -1 is full up, and
         // 1 is full down
         // direction: left_stick_x ranges from -1 to 1, where -1 is full left
         // and 1 is full right
-        float throttle = -gamepad1.left_stick_y;
-        float direction = gamepad1.left_stick_x;
-        float right = throttle - direction;
-        float left = throttle + direction;
+        float right = gamepad1.right_stick_y;
+        float left = gamepad1.left_stick_y;
 
         // clip the right/left values so that the values never exceed +/- 1
         right = Range.clip(right, -1, 1);
