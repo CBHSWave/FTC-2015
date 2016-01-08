@@ -31,8 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.wave.BotAuto;
-import com.qualcomm.ftcrobotcontroller.opmodes.wave.BotManual;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveAuto;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveManual;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveTele;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
@@ -60,12 +61,9 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("NullOp", NullOp.class);
 
     //manager.register("MatrixK9TeleOp", MatrixK9TeleOp.class);
-    manager.register("K9TeleOp", K9TeleOp.class);
-    manager.register("K9Line", K9Line.class);
-    manager.register ("PushBotAuto", PushBotAuto.class);
-    manager.register ("PushBotManual", PushBotManual.class);
-    manager.register("WaveAuto", BotAuto.class);
-    manager.register("WaveManual", BotManual.class);
+    manager.register("WaveAuto", WaveAuto.class);
+    manager.register("WaveManual", WaveManual.class);
+    manager.register("WaveTele", WaveTele.class);
 
 
 
