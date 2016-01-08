@@ -27,4 +27,9 @@ public abstract class Wave extends OpMode {
         });
         loopThread.run();
     }
+
+    @Override
+    public void stop() {
+        running = false;
+    }
 }
