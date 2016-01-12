@@ -1,5 +1,6 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.wave;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -9,28 +10,23 @@ import com.qualcomm.robotcore.util.Range;
 public class WaveTele extends WaveTelemetry {
     @Override
     public void loop() {
-        // throttle: left_stick_y ranges from -1 to 1, where -1 is full up, and
-        // 1 is full down
-        // direction: left_stick_x ranges from -1 to 1, where -1 is full left
-        // and 1 is full right
-        float right = gamepad1.right_stick_y;
-        float left = gamepad1.left_stick_y;
-
-        // clip the right/left values so that the values never exceed +/- 1
-        right = Range.clip(right, -1, 1);
-        left = Range.clip(left, -1, 1);
-
-        // scale the joystick value to make it easier to control
-        // the robot more precisely at slower speeds.
-        right = (float)scaleJoystick(right);
-        left =  (float)scaleJoystick(left);
-
-        // write the values to the motors
-        setMotorRight(right);
-        setMotorLeft(left);
+        joystickMotors(gamepad1.right_stick_y, motorRight);
+        joystickMotors(gamepad1.left_stick_y, motorLeft);
 
         // Use BotTelemetry loop to log data
         super.loop();
+    }
+
+    protected void joystickMotors(float joyValue, DcMotor... motors) {
+        // clip the values so that the values never exceed +/- 1
+        float value = Range.clip(joyValue, -1, 1);
+
+        // scale the joystick value to make it easier to control
+        // the robot more precisely at slower speeds.
+        value = (float)scaleJoystick(value);
+
+        // write the values to the motors
+        setMotors(value, motors);
     }
 
     /*

@@ -1,5 +1,7 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.wave;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 /**
  * Created by Wes
  * To be extended by custom opmodes, provides telemetry logging
@@ -10,13 +12,13 @@ public abstract class WaveTelemetry extends WaveHardware {
         telemetry.addData("Text", "*** Robot Data***");
     }
 
-    protected void setMotorLeft(double power) {
-        motorLeft.setPower(power);
-        telemetry.addData("left tgt pwr",  "left  pwr: " + String.format("%.2f", power));
-    }
-
-    protected void setMotorRight(double power) {
-        motorRight.setPower(power);
-        telemetry.addData("right tgt pwr",  "right  pwr: " + String.format("%.2f", power));
+    protected void setMotors(double power, DcMotor... motors) {
+        for (DcMotor motor : motors) {
+            String name = hardwareNames.get(motor);
+            if (name == null)
+                name = "Unknown motor";
+            telemetry.addData(name + " tgt pwr", name + "  pwr: " + String.format("%.2f", power));
+            motor.setPower(power);
+        }
     }
 }
