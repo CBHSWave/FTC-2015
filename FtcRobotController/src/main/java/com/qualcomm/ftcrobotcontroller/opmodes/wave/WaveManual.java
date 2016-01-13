@@ -5,8 +5,6 @@ package com.qualcomm.ftcrobotcontroller.opmodes.wave;
  * Manual period code
  */
 public class WaveManual extends WaveTele {
-    protected boolean spinToggle = false;
-
     @Override
     public void loop() {
         joystickMotors(gamepad2.left_stick_y, liftMotor1);
