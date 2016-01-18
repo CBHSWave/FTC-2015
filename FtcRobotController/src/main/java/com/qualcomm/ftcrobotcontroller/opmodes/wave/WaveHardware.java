@@ -22,6 +22,7 @@ public abstract class WaveHardware extends Wave {
 
     protected DcMotorController spinController;
     protected DcMotor spinnerMotor;
+    protected DcMotor churroGrabber;
 
     protected ServoController servoController;
     protected Servo bucketRotationServo;
@@ -51,6 +52,9 @@ public abstract class WaveHardware extends Wave {
         spinnerMotor = new DcMotor(spinController, 1);
         spinnerMotor.setDirection(DcMotor.Direction.REVERSE);
         hardwareNames.put(spinnerMotor, "spinnerMotor");
+
+        churroGrabber = new DcMotor(spinController, 2);
+        hardwareNames.put(churroGrabber, "churroGrabber");
 
         // Lift Motors
 
