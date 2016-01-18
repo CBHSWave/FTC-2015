@@ -1,6 +1,9 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.wave;
 
+import android.graphics.Path;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by Wes
@@ -19,6 +22,24 @@ public abstract class WaveTelemetry extends WaveHardware {
                 name = "Unknown motor";
             telemetry.addData(name + " tgt pwr", name + "  pwr: " + String.format("%.2f", power));
             motor.setPower(power);
+        }
+    }
+
+    protected void setServosDirection(double position, Servo.Direction direction, Servo... servos) {
+        for (Servo servo : servos) {
+            String name = hardwareNames.get(servo);
+            if (name == null)
+                name = "Unknown servo";
+            telemetry.addData(name + " tgt position",
+                    name + " position & direction: " + String.format("%.2f %s", position, direction.name()));
+            servo.setDirection(direction);
+            servo.setPosition(position);
+        }
+    }
+
+    protected void setServos(double position, Servo... servos) {
+        for (Servo servo : servos) {
+            setServosDirection(position, servo.getDirection(), servo);
         }
     }
 }
