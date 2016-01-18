@@ -17,13 +17,8 @@ public class WaveManual extends WaveTele {
             setMotors(0, spinnerMotor);
         }
 
-        if (gamepad1.dpad_up) {
-            setMotors(0.5, churroGrabber);
-        } else if (gamepad1.dpad_down) {
-            setMotors(-0.5, churroGrabber);
-        } else {
-            setMotors(0, churroGrabber);
-        }
+        float churroValue = (-gamepad1.left_trigger / 2 + gamepad1.right_trigger / 2);
+        scaledMotors(churroValue, churroGrabber);
 
         // Gamepad 2
 
@@ -38,8 +33,8 @@ public class WaveManual extends WaveTele {
             setServos(0.5, bucketRotationServo);
         }
 
-        joystickMotors(gamepad2.left_stick_y, liftMotor1);
-        joystickMotors(gamepad2.right_stick_y, liftMotor2);
+        scaledMotors(gamepad2.left_stick_y, liftMotor1);
+        scaledMotors(gamepad2.right_stick_y, liftMotor2);
 
         super.loop();
     }

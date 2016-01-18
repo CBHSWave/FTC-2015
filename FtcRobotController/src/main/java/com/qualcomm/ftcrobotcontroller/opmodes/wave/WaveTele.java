@@ -10,18 +10,18 @@ import com.qualcomm.robotcore.util.Range;
 public class WaveTele extends WaveTelemetry {
     @Override
     public void loop() {
-        joystickMotors(gamepad1.right_stick_y, motorRight);
-        joystickMotors(gamepad1.left_stick_y, motorLeft);
+        scaledMotors(gamepad1.right_stick_y, motorRight);
+        scaledMotors(gamepad1.left_stick_y, motorLeft);
 
         // Use BotTelemetry loop to log data
         super.loop();
     }
 
-    protected void joystickMotors(float joyValue, DcMotor... motors) {
+    protected void scaledMotors(float inputValue, DcMotor... motors) {
         // clip the values so that the values never exceed +/- 1
-        float value = Range.clip(joyValue, -1, 1);
+        float value = Range.clip(inputValue, -1, 1);
 
-        // scale the joystick value to make it easier to control
+        // scale the value to make it easier to control
         // the robot more precisely at slower speeds.
         value = (float)scaleJoystick(value);
 
