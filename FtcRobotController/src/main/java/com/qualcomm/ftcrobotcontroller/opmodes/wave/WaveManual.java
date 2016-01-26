@@ -5,6 +5,9 @@ package com.qualcomm.ftcrobotcontroller.opmodes.wave;
  * Manual period code
  */
 public class WaveManual extends WaveTele {
+    protected boolean lastA2 = false;
+    protected boolean bucketDoorToggle = false;
+
     @Override
     public void loop() {
         // Gamepad 1
@@ -23,20 +26,29 @@ public class WaveManual extends WaveTele {
         // Gamepad 2
 
         if (gamepad2.dpad_up) {
-            bucketRotationServo.setPosition(0);
             setServos(0, bucketRotationServo);
         } else if (gamepad2.dpad_down) {
-            bucketRotationServo.setPosition(1);
             setServos(1, bucketRotationServo);
         } else {
-            bucketRotationServo.setPosition(0.5);
             setServos(0.5, bucketRotationServo);
+        }
+
+        if (gamepad2.a && !lastA2) {
+            bucketDoorToggle = !bucketDoorToggle;
+        }
+
+        if (bucketDoorToggle) {
+            setServos(1, bucketDoor);
+        } else {
+            setServos(0, bucketDoor);
         }
 
         scaledMotors(gamepad2.left_stick_y, liftMotor1);
         scaledMotors(gamepad2.right_stick_y, liftMotor2);
 
+        // Store previous values
+
+        lastA2 = gamepad2.a;
         super.loop();
     }
-
 }

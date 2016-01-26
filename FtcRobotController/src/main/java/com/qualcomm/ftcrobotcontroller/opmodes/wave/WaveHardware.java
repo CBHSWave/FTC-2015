@@ -26,6 +26,7 @@ public abstract class WaveHardware extends Wave {
 
     protected ServoController servoController;
     protected Servo bucketRotationServo;
+    protected Servo bucketDoor;
 
 
     @Override
@@ -78,6 +79,10 @@ public abstract class WaveHardware extends Wave {
         bucketRotationServo = new Servo(servoController, 1);
         hardwareNames.put(bucketRotationServo, "bucketRotationServo");
         bucketRotationServo.setPosition(0.5);
+
+        bucketDoor = new Servo(servoController, 2);
+        hardwareNames.put(bucketDoor, "bucketDoor");
+        bucketDoor.setPosition(0);
     }
 
     protected <A> A getPart(String name, HardwareMap.DeviceMapping<A> mapping) {
