@@ -6,7 +6,9 @@ package com.qualcomm.ftcrobotcontroller.opmodes.wave;
  */
 public class WaveManual extends WaveTele {
     protected boolean lastA2 = false;
+    protected boolean lastRb2 = false;
     protected boolean bucketDoorToggle = false;
+    protected boolean wireToggle = false;
 
     @Override
     public void loop() {
@@ -20,18 +22,15 @@ public class WaveManual extends WaveTele {
             setMotors(0, spinnerMotor);
         }
 
+
+        // OPTIONAL CHURRO
         float churroValue = (-gamepad1.left_trigger / 2 + gamepad1.right_trigger / 2);
         scaledMotors(churroValue, churroGrabber);
 
         // Gamepad 2
 
-        if (gamepad2.dpad_up) {
-            setServos(0, bucketRotationServo);
-        } else if (gamepad2.dpad_down) {
-            setServos(1, bucketRotationServo);
-        } else {
-            setServos(0.5, bucketRotationServo);
-        }
+        double bucketRot = (scaleJoystick(gamepad2.right_trigger)/2 - scaleJoystick(gamepad2.left_trigger)/2) + 0.5;
+        setServos(bucketRot, bucketRotationServo);
 
         if (gamepad2.a && !lastA2) {
             bucketDoorToggle = !bucketDoorToggle;
@@ -43,12 +42,23 @@ public class WaveManual extends WaveTele {
             setServos(0, bucketDoor);
         }
 
+        if (gamepad2.right_bumper && !lastRb2) {
+            wireToggle = !wireToggle;
+        }
+
+        if (wireToggle) {
+            setMotors(1, wireMotor);
+        } else {
+            setMotors(0, wireMotor);
+        }
+
         scaledMotors(gamepad2.left_stick_y, liftMotor1);
         scaledMotors(gamepad2.right_stick_y, liftMotor2);
 
         // Store previous values
 
         lastA2 = gamepad2.a;
+        lastRb2 = gamepad2.right_bumper;
         super.loop();
     }
 }

@@ -1,6 +1,7 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.wave;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -27,6 +28,12 @@ public class WaveTele extends WaveTelemetry {
 
         // write the values to the motors
         setMotors(value, motors);
+    }
+
+    protected void scaledServos(double inputValue, Servo... servos) {
+        double value = Range.clip(inputValue, 0, 1);
+        value = scaleJoystick(value);
+        setServos(value, servos);
     }
 
     /*
