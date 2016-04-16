@@ -1,5 +1,6 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.wave;
 
+import com.google.inject.Injector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -7,13 +8,18 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by Wes
  * To be extended by custom opmodes, provides telemetry logging
  */
-public abstract class WaveTelemetry extends WaveHardware {
+public abstract class WaveTelemetry extends Wave {
+    public WaveTelemetry(Injector injector) {
+        super(injector);
+    }
+
     @Override
     public void loop() {
         telemetry.addData("Text", "*** Robot Data***");
+        super.loop();
     }
 
-    protected void setMotors(double power, DcMotor... motors) {
+    public void setMotors(double power, DcMotor... motors) {
         for (DcMotor motor : motors) {
             String name = hardwareNames.get(motor);
             if (name == null)
@@ -23,7 +29,7 @@ public abstract class WaveTelemetry extends WaveHardware {
         }
     }
 
-    protected void setServosDirection(double position, Servo.Direction direction, Servo... servos) {
+    public void setServosDirection(double position, Servo.Direction direction, Servo... servos) {
         for (Servo servo : servos) {
             String name = hardwareNames.get(servo);
             if (name == null)
@@ -34,7 +40,7 @@ public abstract class WaveTelemetry extends WaveHardware {
         }
     }
 
-    protected void setServos(double position, Servo... servos) {
+    public void setServos(double position, Servo... servos) {
         for (Servo servo : servos) {
             setServosDirection(position, servo.getDirection(), servo);
         }

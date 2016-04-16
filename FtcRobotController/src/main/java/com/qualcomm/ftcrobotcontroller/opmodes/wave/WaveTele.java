@@ -1,5 +1,6 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.wave;
 
+import com.google.inject.Injector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
@@ -8,17 +9,12 @@ import com.qualcomm.robotcore.util.Range;
  * Created by Wes
  * Contains the joystick movement code
  */
-public class WaveTele extends WaveTelemetry {
-    @Override
-    public void loop() {
-        scaledMotors(gamepad1.right_stick_y, motorRight);
-        scaledMotors(gamepad1.left_stick_y, motorLeft);
-
-        // Use BotTelemetry loop to log data
-        super.loop();
+public abstract class WaveTele extends WaveTelemetry {
+    public WaveTele(Injector injector) {
+        super(injector);
     }
 
-    protected void scaledMotors(float inputValue, DcMotor... motors) {
+    public void scaledMotors(float inputValue, DcMotor... motors) {
         // clip the values so that the values never exceed +/- 1
         float value = Range.clip(inputValue, -1, 1);
 
@@ -30,7 +26,7 @@ public class WaveTele extends WaveTelemetry {
         setMotors(value, motors);
     }
 
-    protected void scaledServos(double inputValue, Servo... servos) {
+    public void scaledServos(double inputValue, Servo... servos) {
         double value = Range.clip(inputValue, 0, 1);
         value = scaleJoystick(value);
         setServos(value, servos);
@@ -41,7 +37,7 @@ public class WaveTele extends WaveTelemetry {
 	 * scaled value is less than linear.  This is to make it easier to drive
 	 * the robot more precisely at slower speeds.
 	 */
-    protected double scaleJoystick(double dVal)  {
+    public double scaleJoystick(double dVal)  {
         double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
                 0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00 };
 

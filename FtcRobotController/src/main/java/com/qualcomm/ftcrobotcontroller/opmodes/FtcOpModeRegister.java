@@ -31,11 +31,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.Wave;
 import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveAuto;
 import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveManual;
 import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveTele;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.Module;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.ModuleInjection;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.manual.Drive;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Register Op Modes
@@ -61,9 +70,17 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("NullOp", NullOp.class);
 
     //manager.register("MatrixK9TeleOp", MatrixK9TeleOp.class);
-    manager.register("WaveAuto", WaveAuto.class);
-    manager.register("WaveManual", WaveManual.class);
-    manager.register("WaveTele", WaveTele.class);
+    Injector injector = Guice.createInjector(new ModuleInjection());
+    manager.register("WaveAuto", new WaveAuto(injector));
+    manager.register("WaveManual", new WaveManual(injector));
+    manager.register("WaveTele", new Wave(injector) {
+      @Override
+      public List<Class<? extends Module>> getModules() {
+        ArrayList<Class<? extends Module>> mods = new ArrayList<Class<? extends Module>>();
+        mods.add(Drive.class);
+        return mods;
+      }
+    });
 
 
 
