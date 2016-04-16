@@ -5,7 +5,7 @@ import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.Module;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 
-public class Wheels implements Module<Wave> {
+public class Wheels implements Module {
     protected DcMotorController wheelController;
     public DcMotor motorRight;
     public DcMotor motorLeft;
@@ -24,6 +24,11 @@ public class Wheels implements Module<Wave> {
 
     @Override
     public void loop(Wave mode) {
+
+    }
+
+    @Override
+    public void stop(Wave mode) {
 
     }
 }

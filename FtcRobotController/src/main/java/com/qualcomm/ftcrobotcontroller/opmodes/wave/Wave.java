@@ -1,14 +1,17 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.wave;
 
+import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.Module;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.ModuleInjection;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.robocol.Telemetry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,18 +19,26 @@ import java.util.List;
  * Created by Wes
  * Top Level class for all bot stuff, automatically loops
  */
-public abstract class Wave extends OpMode {
+public class Wave extends OpMode {
     public HashMap<HardwareDevice, String> hardwareNames;
     private Injector injector;
-    protected double startTime;
+    public double startTime;
     protected List<Module> modules = new ArrayList<Module>();
 
-    public Wave(Injector injector) {
-        this.injector = injector;
+    public Wave(Class<? extends Module>... modules) {
+        this.injector = Guice.createInjector(new ModuleInjection(this));
+        makeModules(modules);
     }
 
+    @SafeVarargs
+    public Wave(Injector injector, Class<? extends Module>... modules) {
+        this.injector = injector;
+        makeModules(modules);
+    }
 
-    public abstract List<Class<? extends Module>> getModules();
+    private void makeModules(Class<? extends Module>... modules) {
+        makeModules(Arrays.asList(modules));
+    }
 
     private void makeModules(List<Class<? extends Module>> moduleClasses) {
         for (Class<? extends Module> clazz : moduleClasses) {
@@ -36,39 +47,24 @@ public abstract class Wave extends OpMode {
     }
 
     @Override
-    public void start()
-    {
-        makeModules(getModules());
-        startTime = time;
-    }
-
-    @Override
     public void loop() {
         for (Module module : modules) {
-            try {
-                module.loop(this);
-            } catch (ClassCastException e) {
-                notSupported(module, e);
-            }
+            module.loop(this);
         }
     }
 
     @Override
     public void init() {
         for (Module module : modules) {
-            try {
-                module.setup(this);
-            } catch (ClassCastException e) {
-                notSupported(module, e);
-            }
+            module.setup(this);
         }
     }
 
-    private void notSupported(Module module, ClassCastException e) {
-        String name = module.getClass().getSimpleName();
-        String info = "module " + name + " not supported by " + this.getClass().getSimpleName();
-        telemetry.
-                addData("module " + name + " failure", info);
+    @Override
+    public void stop() {
+        for (Module module : modules) {
+            module.stop(this);
+        }
     }
 
     public <A> A getPart(String name, HardwareMap.DeviceMapping<A> mapping, Telemetry telemetry) {

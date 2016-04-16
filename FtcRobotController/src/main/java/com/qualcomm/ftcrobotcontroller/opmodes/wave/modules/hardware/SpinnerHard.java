@@ -31,4 +31,9 @@ public class SpinnerHard implements Module {
 
     @Override
     public void loop(Wave mode) {}
+
+    @Override
+    public void stop(Wave mode) {
+
+    }
 }

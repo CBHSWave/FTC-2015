@@ -2,7 +2,6 @@ package com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.hardware;
 
 import com.qualcomm.ftcrobotcontroller.opmodes.wave.Wave;
 import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.Module;
-import com.qualcomm.ftcrobotcontroller.opmodes.wave.util.HardwareUtil;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 
@@ -24,4 +23,9 @@ public class LiftHard implements Module {
 
     @Override
     public void loop(Wave mode) {}
+
+    @Override
+    public void stop(Wave mode) {
+
+    }
 }

@@ -31,89 +31,70 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.qualcomm.ftcrobotcontroller.opmodes.wave.Wave;
-import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveAuto;
-import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveManual;
-import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveTele;
-import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.Module;
-import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.ModuleInjection;
-import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.manual.Drive;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.Instances;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Register Op Modes
  */
 public class FtcOpModeRegister implements OpModeRegister {
 
-  /**
-   * The Op Mode Manager will call this method when it wants a list of all
-   * available op modes. Add your op mode to the list to enable it.
-   *
-   * @param manager op mode manager
-   */
-  public void register(OpModeManager manager) {
+    /**
+    * The Op Mode Manager will call this method when it wants a list of all
+    * available op modes. Add your op mode to the list to enable it.
+    *
+    * @param manager op mode manager
+    */
+    public void register(OpModeManager manager) {
 
-    /*
-     * register your op modes here.
-     * The first parameter is the name of the op mode
-     * The second parameter is the op mode class property
-     *
-     * If two or more op modes are registered with the same name, the app will display an error.
-     */
+        /*
+         * register your op modes here.
+         * The first parameter is the name of the op mode
+         * The second parameter is the op mode class property
+         *
+         * If two or more op modes are registered with the same name, the app will display an error.
+         */
 
-    manager.register("NullOp", NullOp.class);
+        manager.register("NullOp", NullOp.class);
 
-    //manager.register("MatrixK9TeleOp", MatrixK9TeleOp.class);
-    Injector injector = Guice.createInjector(new ModuleInjection());
-    manager.register("WaveAuto", new WaveAuto(injector));
-    manager.register("WaveManual", new WaveManual(injector));
-    manager.register("WaveTele", new Wave(injector) {
-      @Override
-      public List<Class<? extends Module>> getModules() {
-        ArrayList<Class<? extends Module>> mods = new ArrayList<Class<? extends Module>>();
-        mods.add(Drive.class);
-        return mods;
+        //manager.register("MatrixK9TeleOp", MatrixK9TeleOp.class);
+        manager.register("WaveAuto", Instances.auto);
+        manager.register("WaveManual", Instances.manual);
+        manager.register("WaveTele", Instances.tele);
+
+
+
+        /*
+         * Uncomment any of the following lines if you want to register an op mode.
+         */
+        manager.register("MR Gyro Test", MRGyroTest.class);
+
+        //manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
+        //manager.register("ColorSensorDriver", ColorSensorDriver.class);
+
+        //manager.register("IrSeekerOp", IrSeekerOp.class);
+        //manager.register("CompassCalibration", CompassCalibration.class);
+        //manager.register("I2cAddressChangeExample", LinearI2cAddressChange.class);
+
+
+        //manager.register("NxtTeleOp", NxtTeleOp.class);
+
+        //manager.register("LinearK9TeleOp", LinearK9TeleOp.class);
+        //manager.register("LinearIrExample", LinearIrExample.class);
+
+
+        //manager.register ("PushBotManual1", PushBotManual1.class);
+        //manager.register ("PushBotAutoSensors", PushBotAutoSensors.class);
+        //manager.register ("PushBotIrEvent", PushBotIrEvent.class);
+
+        //manager.register ("PushBotManualSensors", PushBotManualSensors.class);
+        //manager.register ("PushBotOdsDetectEvent", PushBotOdsDetectEvent.class);
+        //manager.register ("PushBotOdsFollowEvent", PushBotOdsFollowEvent.class);
+        //manager.register ("PushBotTouchEvent", PushBotTouchEvent.class);
+
+        //manager.register("PushBotDriveTouch", PushBotDriveTouch.java);
+        //manager.register("PushBotIrSeek", PushBotIrSeek.java);
+        //manager.register("PushBotSquare", PushBotSquare.java);
       }
-    });
-
-
-
-    /*
-     * Uncomment any of the following lines if you want to register an op mode.
-     */
-    manager.register("MR Gyro Test", MRGyroTest.class);
-
-    //manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
-    //manager.register("ColorSensorDriver", ColorSensorDriver.class);
-
-    //manager.register("IrSeekerOp", IrSeekerOp.class);
-    //manager.register("CompassCalibration", CompassCalibration.class);
-    //manager.register("I2cAddressChangeExample", LinearI2cAddressChange.class);
-
-
-    //manager.register("NxtTeleOp", NxtTeleOp.class);
-
-    //manager.register("LinearK9TeleOp", LinearK9TeleOp.class);
-    //manager.register("LinearIrExample", LinearIrExample.class);
-
-
-    //manager.register ("PushBotManual1", PushBotManual1.class);
-    //manager.register ("PushBotAutoSensors", PushBotAutoSensors.class);
-    //manager.register ("PushBotIrEvent", PushBotIrEvent.class);
-
-    //manager.register ("PushBotManualSensors", PushBotManualSensors.class);
-    //manager.register ("PushBotOdsDetectEvent", PushBotOdsDetectEvent.class);
-    //manager.register ("PushBotOdsFollowEvent", PushBotOdsFollowEvent.class);
-    //manager.register ("PushBotTouchEvent", PushBotTouchEvent.class);
-
-    //manager.register("PushBotDriveTouch", PushBotDriveTouch.java);
-    //manager.register("PushBotIrSeek", PushBotIrSeek.java);
-    //manager.register("PushBotSquare", PushBotSquare.java);
-  }
 }

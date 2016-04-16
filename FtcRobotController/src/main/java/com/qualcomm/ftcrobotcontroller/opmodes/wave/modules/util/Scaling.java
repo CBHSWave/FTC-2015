@@ -1,35 +1,49 @@
-package com.qualcomm.ftcrobotcontroller.opmodes.wave;
+package com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.util;
 
-import com.google.inject.Injector;
+import com.google.inject.Inject;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.Wave;
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.modules.Module;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-/**
- * Created by Wes
- * Contains the joystick movement code
- */
-public abstract class WaveTele extends WaveTelemetry {
-    public WaveTele(Injector injector) {
-        super(injector);
+public class Scaling implements Module {
+    protected Setters setters;
+
+    @Inject
+    public Scaling(Setters setters) {
+        this.setters = setters;
     }
 
-    public void scaledMotors(float inputValue, DcMotor... motors) {
+    @Override
+    public void setup(Wave mode) {}
+
+    @Override
+    public void loop(Wave mode) {
+        setters.loop(mode);
+    }
+
+    @Override
+    public void stop(Wave mode) {
+
+    }
+
+    public void motors(float inputValue, DcMotor... motors) {
         // clip the values so that the values never exceed +/- 1
         float value = Range.clip(inputValue, -1, 1);
 
         // scale the value to make it easier to control
         // the robot more precisely at slower speeds.
-        value = (float)scaleJoystick(value);
+        value = (float) joystick(value);
 
         // write the values to the motors
-        setMotors(value, motors);
+        setters.motors(value, motors);
     }
 
-    public void scaledServos(double inputValue, Servo... servos) {
+    public void servos(double inputValue, Servo... servos) {
         double value = Range.clip(inputValue, 0, 1);
-        value = scaleJoystick(value);
-        setServos(value, servos);
+        value = joystick(value);
+        setters.servos(value, servos);
     }
 
     /*
@@ -37,7 +51,7 @@ public abstract class WaveTele extends WaveTelemetry {
 	 * scaled value is less than linear.  This is to make it easier to drive
 	 * the robot more precisely at slower speeds.
 	 */
-    public double scaleJoystick(double dVal)  {
+    public double joystick(double dVal)  {
         double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
                 0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00 };
 
