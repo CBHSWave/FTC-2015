@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by Wes
  * To be extended by custom opmodes, provides telemetry logging
  */
-public abstract class WaveTelemetry extends WaveHardware {
+public abstract class WaveTelemetry extends Wave {
     @Override
     public void loop() {
         telemetry.addData("Text", "*** Robot Data***");

@@ -1,10 +1,12 @@
-package com.qualcomm.ftcrobotcontroller.opmodes.wave;
+package com.qualcomm.ftcrobotcontroller.opmodes.wave2015;
+
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveTele;
 
 /**
  * Created by Wes
  * Manual period code
  */
-public class WaveManual extends WaveTele {
+public class WaveManual extends Wave2015 {
     protected boolean lastA2 = false;
     protected boolean lastRb2 = false;
     protected boolean bucketDoorToggle = false;

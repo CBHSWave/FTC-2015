@@ -1,4 +1,6 @@
-package com.qualcomm.ftcrobotcontroller.opmodes.wave;
+package com.qualcomm.ftcrobotcontroller.opmodes.wave2015;
+
+import com.qualcomm.ftcrobotcontroller.opmodes.wave.WaveHardware;
 
 import java.util.concurrent.TimeUnit;
 
@@ -6,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Wes
  * Autonomous period code
  */
-public class WaveAuto extends WaveTelemetry {
+public class WaveAuto extends Wave2015 {
     @Override
     public void setup() {
         super.setup();

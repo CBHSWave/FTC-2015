@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.Range;
  * Created by Wes
  * Contains the joystick movement code
  */
-public class WaveTele extends WaveTelemetry {
+public class WaveTele extends WaveHardware {
     @Override
     public void loop() {
         scaledMotors(gamepad1.right_stick_y, motorRight);
