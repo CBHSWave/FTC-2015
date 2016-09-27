@@ -20,7 +20,9 @@ public class WaveJaggums extends WaveTele {
         hardwareNames.put(servoController, "servos");
 
         jaggum1 = new Servo(servoController, 1);
+        hardwareNames.put(jaggum1, "jaggum1");
         jaggum2 = new Servo(servoController, 2);
+        hardwareNames.put(jaggum2, "jaggum2");
         super.setup();
     }
 
