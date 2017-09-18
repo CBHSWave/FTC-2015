@@ -37,8 +37,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
+
+import java.util.HashMap;
 
 /**
  * This file illustrates the concept of driving a path based on time.
@@ -67,45 +70,56 @@ public class AutoBot extends LinearOpMode {
     /* Declare OpMode members. */
     HardwareBot robot   = new HardwareBot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
+    private double TICKS_PER_CM = (25.33233 + 25.24073)/2;
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
-        robot.rightMotor.setPower(1);
-        robot.leftMotor.setPower(1);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
-            telemetry.addData("Encoder Right:", robot.rightMotor.getCurrentPosition());
-            telemetry.addData("Encoder Left:", robot.leftMotor.getCurrentPosition());
-            telemetry.update();
-        }
-//        robot.rightMotor.setPower(1);
-//        robot.leftMotor.setPower(-1);
-//        runtime.reset();
-//        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
-//            telemetry.addData("Encoder Value", robot.rightMotor.getCurrentPosition());
-//            telemetry.update();
-//        }
-        robot.rightMotor.setPower(0);
-        robot.leftMotor.setPower(0);
+        DcMotor[] motors = {robot.leftMotor, robot.rightMotor};
+        goForward(motors, 100);
         while(opModeIsActive()) {};
     }
 
-    public void goDistance(DcMotor motor, float cm, float power) {
-        float start = traveled(motor);
-        motor.setPower(power);
-        while (opModeIsActive() && traveled(motor) - start < cm) {}
-        motor.setPower(0);
+    public void goForward(DcMotor[] motors, double cm) {
+        HashMap<DcMotor, Float> powers = new HashMap<>();
+        HashMap<DcMotor, Double> cms = new HashMap<>();
+        for (DcMotor motor : motors) {
+            powers.put(motor, Float.valueOf(1));
+            cms.put(motor, cm);
+        }
+        goDistanceMap(powers, cms);
+    }
+
+    public void goDistanceMap(HashMap<DcMotor, Float> motors, HashMap<DcMotor, Double> cm) {
+        HashMap<DcMotor, Double> hashMap = new HashMap<>();
+        for (DcMotor motor : motors.keySet()) {
+            motor.setPower(motors.get(motor));
+            hashMap.put(motor, traveled(motor));
+        }
+        while (opModeIsActive() && !hashMap.isEmpty()) {
+            for (DcMotor motor: motors.keySet()) {
+                telemetry.addData(motor.getDeviceName(), traveled(motor) - hashMap.get(motor));
+                telemetry.update();
+                if (traveled(motor) - hashMap.get(motor) > cm.get(motor)) {
+                    motor.setPower(0);
+                    hashMap.remove(motor);
+                }
+            }
+        }
     }
 
     // Return centimeters traveled since start
-    public float traveled(DcMotor motor) {
+    public double traveled(DcMotor motor) {
         return convertEncoder(motor.getCurrentPosition());
     }
 
     //TODO
-    public float convertEncoder(float encoderTicks) {
-        return encoderTicks;
+    public double convertEncoder(float encoderTicks) {
+        return encoderTicks / TICKS_PER_CM;
     }
+
+
+
 }
+
