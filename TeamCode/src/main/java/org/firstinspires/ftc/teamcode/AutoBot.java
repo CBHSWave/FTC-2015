@@ -41,6 +41,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
+import java.security.acl.AclNotFoundException;
 import java.util.HashMap;
 
 /**
@@ -64,13 +65,15 @@ import java.util.HashMap;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Pushbot: Auto Drive By Time", group="Pushbot")
+@Autonomous(name="AutoBot", group="Auto")
 public class AutoBot extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareBot robot   = new HardwareBot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
     private double TICKS_PER_CM = (25.33233 + 25.24073)/2;
+    private double RADIUS = 23;
+    private double CIRC = Math.PI * RADIUS * 2;
 
     @Override
     public void runOpMode() {
@@ -78,7 +81,9 @@ public class AutoBot extends LinearOpMode {
         waitForStart();
         DcMotor[] motors = {robot.leftMotor, robot.rightMotor};
         goForward(motors, 100);
-        while(opModeIsActive()) {};
+        zeroTurn(robot.leftMotor, robot.rightMotor, 90);
+        goForward(motors, 50);
+        while(opModeIsActive()) {}
     }
 
     public void goForward(DcMotor[] motors, double cm) {
@@ -91,6 +96,16 @@ public class AutoBot extends LinearOpMode {
         goDistanceMap(powers, cms);
     }
 
+    public void zeroTurn(DcMotor left, DcMotor right, double angle) {
+        HashMap<DcMotor, Float> powers = new HashMap<>();
+        powers.put(left, Float.valueOf(angle < 0 ? 1 : -1));
+        powers.put(right, Float.valueOf(angle < 0 ? -1 : 1));
+        HashMap<DcMotor, Double> cms = new HashMap<>();
+        cms.put(left, angleToDistance(Math.abs(angle)));
+        cms.put(right, angleToDistance(Math.abs(angle)));
+        goDistanceMap(powers, cms);
+    }
+
     public void goDistanceMap(HashMap<DcMotor, Float> motors, HashMap<DcMotor, Double> cm) {
         HashMap<DcMotor, Double> hashMap = new HashMap<>();
         for (DcMotor motor : motors.keySet()) {
@@ -98,9 +113,7 @@ public class AutoBot extends LinearOpMode {
             hashMap.put(motor, traveled(motor));
         }
         while (opModeIsActive() && !hashMap.isEmpty()) {
-            for (DcMotor motor: motors.keySet()) {
-                telemetry.addData(motor.getDeviceName(), traveled(motor) - hashMap.get(motor));
-                telemetry.update();
+            for (DcMotor motor : motors.keySet()) {
                 if (traveled(motor) - hashMap.get(motor) > cm.get(motor)) {
                     motor.setPower(0);
                     hashMap.remove(motor);
@@ -119,7 +132,8 @@ public class AutoBot extends LinearOpMode {
         return encoderTicks / TICKS_PER_CM;
     }
 
-
-
+    public double angleToDistance(double angle) {
+        return angle / 360 * CIRC;
+    }
 }
 
