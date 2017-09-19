@@ -10,11 +10,14 @@ import java.util.HashMap;
  */
 
 public class AutoUtil {
+
+    // These are the variables which are needed for the AutoUtil class to do its work
     private final double TICKS_PER_CM;
     private final double RADIUS;
     private final LinearOpMode OP_MODE;
     private final double CIRC;
 
+    // This constructor will allow you to access the AutoUtil class and set the variables it needs
     public AutoUtil(double TICKS_PER_CM, double RADIUS, LinearOpMode OP_MODE) {
         this.TICKS_PER_CM = TICKS_PER_CM;
         this.RADIUS = RADIUS;
@@ -22,37 +25,67 @@ public class AutoUtil {
         this.CIRC = 2 * Math.PI * this.RADIUS;
     }
 
-    public void goForward(DcMotor[] motors, double cm) {
+    // This method goes forward for a specified distance in cm on the specified motors
+    public void goForward(double cm, DcMotor... motors) {
+
+        // Establish the HashMaps we will use to invoke the goDistanceMap function
         HashMap<DcMotor, Float> powers = new HashMap<>();
         HashMap<DcMotor, Double> cms = new HashMap<>();
+
+        // For each motor that was specified by the caller...
         for (DcMotor motor : motors) {
+            // Put the power and the centimeters needed into the respective HashMaps
             powers.put(motor, Float.valueOf(1));
             cms.put(motor, cm);
         }
+
+        // Finally, call the goDistanceMap function with those HashMaps
         goDistanceMap(powers, cms);
     }
 
     public void zeroTurn(DcMotor left, DcMotor right, double angle) {
+
+        // Establish the HashMaps we will use to invoke the goDistanceMap function
         HashMap<DcMotor, Float> powers = new HashMap<>();
+        HashMap<DcMotor, Double> cms = new HashMap<>();
+
+        // Set up the powers with equal and opposite for zero-turning affect
         powers.put(left, Float.valueOf(angle < 0 ? 1 : -1));
         powers.put(right, Float.valueOf(angle < 0 ? -1 : 1));
-        HashMap<DcMotor, Double> cms = new HashMap<>();
+
+        // Convert the angles into a distance in centimeters to use
         cms.put(left, angleToDistance(Math.abs(angle)));
         cms.put(right, angleToDistance(Math.abs(angle)));
+
+        // Invoke the goDistanceMap function
         goDistanceMap(powers, cms);
     }
 
     public void goDistanceMap(HashMap<DcMotor, Float> motors, HashMap<DcMotor, Double> cm) {
-        HashMap<DcMotor, Double> hashMap = new HashMap<>();
+
+        // Create a new HashMap to store the starting positions
+        HashMap<DcMotor, Double> starts = new HashMap<>();
+
+        // Loop through all the available motors specified and...
         for (DcMotor motor : motors.keySet()) {
+
+            // Set the appropriate power and store the starting positions in starts
             motor.setPower(motors.get(motor));
-            hashMap.put(motor, traveled(motor));
+            starts.put(motor, traveled(motor));
         }
-        while (OP_MODE.opModeIsActive() && !hashMap.isEmpty()) {
+
+        // While the OpMode remains active and the there are motors (starts) remaining...
+        while (OP_MODE.opModeIsActive() && !starts.isEmpty()) {
+
+            // Loop through each motor...
             for (DcMotor motor : motors.keySet()) {
-                if (hashMap.containsKey(motor) && Math.abs(traveled(motor) - hashMap.get(motor)) > cm.get(motor)) {
+
+                // If the starts still has this motor and it has traveled the distance it needs to...
+                if (starts.containsKey(motor) && Math.abs(traveled(motor) - starts.get(motor)) > cm.get(motor)) {
+
+                    // Turn the motor off and remove it from starts
                     motor.setPower(0);
-                    hashMap.remove(motor);
+                    starts.remove(motor);
                 }
             }
         }
@@ -63,11 +96,12 @@ public class AutoUtil {
         return convertEncoder(motor.getCurrentPosition());
     }
 
-    //TODO
+    // Convert envoder ticks into centimeters
     public double convertEncoder(float encoderTicks) {
         return encoderTicks / TICKS_PER_CM;
     }
 
+    // Convert a turned angle into the centimeters traveled by a wheel
     public double angleToDistance(double angle) {
         return angle / 360 * CIRC;
     }

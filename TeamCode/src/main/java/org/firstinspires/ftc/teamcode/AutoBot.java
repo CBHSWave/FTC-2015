@@ -44,43 +44,31 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 import java.security.acl.AclNotFoundException;
 import java.util.HashMap;
 
-/**
- * This file illustrates the concept of driving a path based on time.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
- *
- * The code assumes that you do NOT have encoders on the wheels,
- *   otherwise you would use: PushbotAutoDriveByEncoder;
- *
- *   The desired path in this example is:
- *   - Drive forward for 3 seconds
- *   - Spin right for 1.3 seconds
- *   - Drive Backwards for 1 Second
- *   - Stop and close the claw.
- *
- *  The code is written in a simple form with no optimizations.
- *  However, there are several ways that this type of sequence could be streamlined,
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-
+// Declare that the OpMode is Autonomous and is named AutoBot
 @Autonomous(name="AutoBot", group="Auto")
 public class AutoBot extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareBot robot   = new HardwareBot();   // Use a Pushbot's hardware
+    HardwareBot robot   = new HardwareBot();   // Use our hardware
     private ElapsedTime     runtime = new ElapsedTime();
     private AutoUtil util = new AutoUtil((23.33233 + 25.24073)/2, 23, this);
 
     @Override
     public void runOpMode() {
+        // Setup hardware and then wait for start of the OpMode
         robot.init(hardwareMap);
         waitForStart();
-        DcMotor[] motors = {robot.leftMotor, robot.rightMotor};
-        util.goForward(motors, 100);
+
+        // Go forward on the motors for 100 cm
+        util.goForward(100, robot.leftMotor, robot.rightMotor);
+
+        // Zero Turn on the established motors for 90 degrees counterclockwise
         util.zeroTurn(robot.leftMotor, robot.rightMotor, 90);
-        util.goForward(motors, 50);
+
+        // Go forward on the motors for 50 cm
+        util.goForward(50, robot.leftMotor, robot.rightMotor);
+
+        // Wait until the user stops the OpMode
         while(opModeIsActive()) {}
     }
 
