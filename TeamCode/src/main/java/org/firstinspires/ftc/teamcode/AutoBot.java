@@ -71,69 +71,19 @@ public class AutoBot extends LinearOpMode {
     /* Declare OpMode members. */
     HardwareBot robot   = new HardwareBot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
-    private double TICKS_PER_CM = (25.33233 + 25.24073)/2;
-    private double RADIUS = 23;
-    private double CIRC = Math.PI * RADIUS * 2;
+    private AutoUtil util = new AutoUtil((23.33233 + 25.24073)/2, 23, this);
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
         DcMotor[] motors = {robot.leftMotor, robot.rightMotor};
-        goForward(motors, 100);
-        zeroTurn(robot.leftMotor, robot.rightMotor, 90);
-        goForward(motors, 50);
+        util.goForward(motors, 100);
+        util.zeroTurn(robot.leftMotor, robot.rightMotor, 90);
+        util.goForward(motors, 50);
         while(opModeIsActive()) {}
     }
 
-    public void goForward(DcMotor[] motors, double cm) {
-        HashMap<DcMotor, Float> powers = new HashMap<>();
-        HashMap<DcMotor, Double> cms = new HashMap<>();
-        for (DcMotor motor : motors) {
-            powers.put(motor, Float.valueOf(1));
-            cms.put(motor, cm);
-        }
-        goDistanceMap(powers, cms);
-    }
 
-    public void zeroTurn(DcMotor left, DcMotor right, double angle) {
-        HashMap<DcMotor, Float> powers = new HashMap<>();
-        powers.put(left, Float.valueOf(angle < 0 ? 1 : -1));
-        powers.put(right, Float.valueOf(angle < 0 ? -1 : 1));
-        HashMap<DcMotor, Double> cms = new HashMap<>();
-        cms.put(left, angleToDistance(Math.abs(angle)));
-        cms.put(right, angleToDistance(Math.abs(angle)));
-        goDistanceMap(powers, cms);
-    }
-
-    public void goDistanceMap(HashMap<DcMotor, Float> motors, HashMap<DcMotor, Double> cm) {
-        HashMap<DcMotor, Double> hashMap = new HashMap<>();
-        for (DcMotor motor : motors.keySet()) {
-            motor.setPower(motors.get(motor));
-            hashMap.put(motor, traveled(motor));
-        }
-        while (opModeIsActive() && !hashMap.isEmpty()) {
-            for (DcMotor motor : motors.keySet()) {
-                if (hashMap.containsKey(motor) && Math.abs(traveled(motor) - hashMap.get(motor)) > cm.get(motor)) {
-                    motor.setPower(0);
-                    hashMap.remove(motor);
-                }
-            }
-        }
-    }
-
-    // Return centimeters traveled since start
-    public double traveled(DcMotor motor) {
-        return convertEncoder(motor.getCurrentPosition());
-    }
-
-    //TODO
-    public double convertEncoder(float encoderTicks) {
-        return encoderTicks / TICKS_PER_CM;
-    }
-
-    public double angleToDistance(double angle) {
-        return angle / 360 * CIRC;
-    }
 }
 
