@@ -50,8 +50,7 @@ public class AutoBot extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareBot robot   = new HardwareBot();   // Use our hardware
-    private ElapsedTime     runtime = new ElapsedTime();
-    private AutoUtil util = new AutoUtil((23.33233 + 25.24073)/2, 23, this);
+    private AutoUtil util = AutoUtil.testBot(this); // Create a testBot utility class with this OpMode
 
     @Override
     public void runOpMode() {
@@ -71,7 +70,5 @@ public class AutoBot extends LinearOpMode {
         // Wait until the user stops the OpMode
         while(opModeIsActive()) {}
     }
-
-
 }
 
