@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,8 +15,8 @@ public class AutoUtil {
     // These are the variables which are needed for the AutoUtil class to do its work
     private final double TICKS_PER_CM;
     private final double RADIUS;
-    private final LinearOpMode OP_MODE;
     private final double CIRC;
+    private final LinearOpMode OP_MODE;
 
     // This constructor will allow you to access the AutoUtil class and set the variables it needs
     public AutoUtil(double TICKS_PER_CM, double RADIUS, LinearOpMode OP_MODE) {
