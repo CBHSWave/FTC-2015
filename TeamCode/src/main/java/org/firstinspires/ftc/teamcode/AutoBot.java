@@ -114,7 +114,7 @@ public class AutoBot extends LinearOpMode {
         }
         while (opModeIsActive() && !hashMap.isEmpty()) {
             for (DcMotor motor : motors.keySet()) {
-                if (traveled(motor) - hashMap.get(motor) > cm.get(motor)) {
+                if (hashMap.containsKey(motor) && Math.abs(traveled(motor) - hashMap.get(motor)) > cm.get(motor)) {
                     motor.setPower(0);
                     hashMap.remove(motor);
                 }
