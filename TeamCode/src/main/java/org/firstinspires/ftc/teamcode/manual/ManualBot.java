@@ -50,6 +50,14 @@ public class ManualBot extends OpMode{
         double right = -gamepad1.right_stick_y;
         robot.leftMotor.setPower(left);
         robot.rightMotor.setPower(right);
+
+        if (gamepad1.dpad_up) {
+            robot.testservo.setPosition(robot.testservo.getPosition() + 1);
+        } else if (gamepad1.dpad_down) {
+            robot.testservo.setPosition(robot.testservo.getPosition() - 1);
+        }
+        telemetry.addData("meow", robot.testservo.getPosition());
+        telemetry.update();
     }
 
     /*

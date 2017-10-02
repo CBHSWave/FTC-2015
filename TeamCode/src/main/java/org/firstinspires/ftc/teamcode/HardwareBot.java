@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.AccelerationSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -25,6 +26,7 @@ public class HardwareBot {
     /* Public OpMode members. */
     public DcMotor  leftMotor;
     public DcMotor  rightMotor;
+    public Servo testservo;
 //    public AccelerationSensor accel;
 
     /* local OpMode members. */
@@ -56,6 +58,10 @@ public class HardwareBot {
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        testservo = hwMap.servo.get("testservo");
+        testservo.resetDeviceConfigurationForOpMode();
+        testservo.setPosition(0);
     }
 
     /***
