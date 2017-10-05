@@ -48,8 +48,15 @@ public class ManualBot extends OpMode{
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         double left = -gamepad1.left_stick_y;
         double right = -gamepad1.right_stick_y;
-        robot.leftMotor.setPower(left);
-        robot.rightMotor.setPower(right);
+        robot.leftMotor.setPower(ManualUtil.scale(left));
+        robot.rightMotor.setPower(ManualUtil.scale(right));
+        if (gamepad1.a){
+            robot.testservo.setPosition(robot.testservo.getPosition() + 0.1);
+        } else if (gamepad1.b) {
+            robot.testservo.setPosition(robot.testservo.getPosition() - 0.1);
+        } else if (gamepad1.x) {
+            telemetry.addData("Meow", robot.testservo.getPosition());
+        }
     }
 
     /*
