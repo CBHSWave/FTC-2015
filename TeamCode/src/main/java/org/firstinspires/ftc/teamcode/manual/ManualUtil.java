@@ -5,6 +5,8 @@ package org.firstinspires.ftc.teamcode.manual;
  */
 
 public class ManualUtil {
+
+    // Method for scaling inputs to the motors from the gamepad to allow for more natural controls
     public static double scale(double value) {
         double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
                 0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00 };

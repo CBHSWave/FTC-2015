@@ -59,9 +59,10 @@ public class HardwareBot {
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        // Setup the testservo
         testservo = hwMap.servo.get("testservo");
-        testservo.setPosition(0);
         testservo.resetDeviceConfigurationForOpMode();
+        testservo.setPosition(0);
     }
 
     /***
