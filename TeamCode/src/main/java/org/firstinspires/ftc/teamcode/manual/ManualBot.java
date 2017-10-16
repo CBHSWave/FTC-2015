@@ -57,9 +57,9 @@ public class ManualBot extends OpMode{
 
         // Temporary testservo controls
         if (gamepad1.dpad_up) {
-            robot.testservo.setPosition(robot.testservo.getPosition() + 1);
+            robot.testservo.setPosition(robot.testservo.getPosition() + 0.2);
         } else if (gamepad1.dpad_down) {
-            robot.testservo.setPosition(robot.testservo.getPosition() - 1);
+            robot.testservo.setPosition(robot.testservo.getPosition() - 0.2);
         }
 
         // Record the positions and powers for telemetry data for testing
