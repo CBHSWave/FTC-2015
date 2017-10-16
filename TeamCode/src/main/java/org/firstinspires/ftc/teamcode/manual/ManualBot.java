@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.HardwareBot;
 @TeleOp(name="Manual", group="Manual")
 public class ManualBot extends OpMode{
 
+    private static final float TEST_MOTOR_POW = 1;
     /* Declare OpMode members. */
     HardwareBot robot       = new HardwareBot(); // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class.
@@ -52,7 +53,9 @@ public class ManualBot extends OpMode{
         // Set the power based on scaling to make it easier to control
         robot.leftMotor.setPower(ManualUtil.scale(left));
         robot.rightMotor.setPower(ManualUtil.scale(right));
-        robot.testmotor.setPower(ManualUtil.scale(gamepad1.right_trigger)- ManualUtil.scale(gamepad1.left_trigger));
+
+        // Testmotor1 controls
+        robot.testmotor1.setPower(ManualUtil.scale(gamepad1.right_trigger)- ManualUtil.scale(gamepad1.left_trigger));
 
 
         // Temporary testservo controls
@@ -62,10 +65,21 @@ public class ManualBot extends OpMode{
             robot.testservo.setPosition(robot.testservo.getPosition() - 0.2);
         }
 
+        // Testmotor2 controls
+
+        if (gamepad1.right_bumper){
+            robot.testmotor2.setPower(TEST_MOTOR_POW);
+        } else if (gamepad1.left_bumper) {
+            robot.testmotor2.setPower(-TEST_MOTOR_POW);
+        } else {
+            robot.testmotor2.setPower(0);
+        }
+
         // Record the positions and powers for telemetry data for testing
         telemetry.addData("*TEST*", "");
         telemetry.addData("testservo", robot.testservo.getPosition());
-        telemetry.addData("testmotor", robot.testmotor.getPower());
+        telemetry.addData("testmotor1", robot.testmotor1.getPower());
+        telemetry.addData("testmotor2", robot.testmotor2.getPower());
 
         telemetry.addData("*DRIVE*", "");
         telemetry.addData("leftmotor", robot.leftMotor.getPower());
