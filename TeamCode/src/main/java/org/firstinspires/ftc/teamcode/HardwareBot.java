@@ -26,6 +26,7 @@ public class HardwareBot {
     /* Public OpMode members. */
     public DcMotor  leftMotor;
     public DcMotor  rightMotor;
+    public DcMotor testmotor;
     public Servo testservo;
 //    public AccelerationSensor accel;
 
@@ -59,10 +60,16 @@ public class HardwareBot {
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Setup the testservo
+        // Set up the testservo
         testservo = hwMap.servo.get("testservo");
         testservo.resetDeviceConfigurationForOpMode();
         testservo.setPosition(0);
+
+        // Set up the testmotor
+        testmotor = hwMap.dcMotor.get("testmotor");
+        testmotor.setPower(0);
+        testmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        testmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /***

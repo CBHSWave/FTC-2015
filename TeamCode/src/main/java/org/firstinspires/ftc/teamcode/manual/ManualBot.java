@@ -52,6 +52,8 @@ public class ManualBot extends OpMode{
         // Set the power based on scaling to make it easier to control
         robot.leftMotor.setPower(ManualUtil.scale(left));
         robot.rightMotor.setPower(ManualUtil.scale(right));
+        robot.testmotor.setPower(ManualUtil.scale(gamepad1.right_trigger)- ManualUtil.scale(gamepad1.left_trigger));
+
 
         // Temporary testservo controls
         if (gamepad1.dpad_up) {
@@ -60,8 +62,14 @@ public class ManualBot extends OpMode{
             robot.testservo.setPosition(robot.testservo.getPosition() - 1);
         }
 
-        // Record the position for the testservo
+        // Record the positions and powers for telemetry data for testing
+        telemetry.addData("*TEST*", "");
         telemetry.addData("testservo", robot.testservo.getPosition());
+        telemetry.addData("testmotor", robot.testmotor.getPower());
+
+        telemetry.addData("*DRIVE*", "");
+        telemetry.addData("leftmotor", robot.leftMotor.getPower());
+        telemetry.addData("rightmotor", robot.rightMotor.getPower());
         telemetry.update();
     }
 
