@@ -46,44 +46,51 @@ public class ManualBot extends OpMode{
      */
     @Override
     public void loop() {
-        // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        double left = -gamepad1.left_stick_y;
-        double right = -gamepad1.right_stick_y;
-
-        // Set the power based on scaling to make it easier to control
-        robot.leftMotor.setPower(ManualUtil.scale(left));
-        robot.rightMotor.setPower(ManualUtil.scale(right));
-
-        // Testmotor1 controls
-        robot.testmotor1.setPower(ManualUtil.scale(gamepad1.right_trigger)- ManualUtil.scale(gamepad1.left_trigger));
-
-
-        // Temporary testservo controls
-        if (gamepad1.dpad_up) {
-            robot.testservo.setPosition(robot.testservo.getPosition() + 0.2);
-        } else if (gamepad1.dpad_down) {
-            robot.testservo.setPosition(robot.testservo.getPosition() - 0.2);
-        }
-
-        // Testmotor2 controls
-
-        if (gamepad1.right_bumper){
-            robot.testmotor2.setPower(TEST_MOTOR_POW);
-        } else if (gamepad1.left_bumper) {
-            robot.testmotor2.setPower(-TEST_MOTOR_POW);
-        } else {
-            robot.testmotor2.setPower(0);
-        }
-
-        // Record the positions and powers for telemetry data for testing
         telemetry.addData("*TEST*", "");
-        telemetry.addData("testservo", robot.testservo.getPosition());
-        telemetry.addData("testmotor1", robot.testmotor1.getPower());
-        telemetry.addData("testmotor2", robot.testmotor2.getPower());
 
-        telemetry.addData("*DRIVE*", "");
-        telemetry.addData("leftmotor", robot.leftMotor.getPower());
-        telemetry.addData("rightmotor", robot.rightMotor.getPower());
+
+        if (robot.fl != null && robot.fr != null && robot.bl != null && robot.br != null) {
+            ManualUtil.mecanumDrive(gamepad1, 0.1,
+                    robot.fl, robot.fr,
+                    robot.bl, robot.br);
+            telemetry.addData("fl", robot.fl.getPower());
+            telemetry.addData("fr", robot.fr.getPower());
+            telemetry.addData("bl", robot.bl.getPower());
+            telemetry.addData("br", robot.br.getPower());
+        }
+
+        if (robot.leftMotor != null && robot.rightMotor != null) {
+            ManualUtil.normalDrive(gamepad1, robot.leftMotor, robot.rightMotor);
+
+            telemetry.addData("leftmotor", robot.leftMotor.getPower());
+            telemetry.addData("rightmotor", robot.rightMotor.getPower());
+        }
+
+        if (robot.testservo != null) {
+            if (gamepad1.dpad_up) {
+                robot.testservo.setPosition(robot.testservo.getPosition() + 0.2);
+            } else if (gamepad1.dpad_down) {
+                robot.testservo.setPosition(robot.testservo.getPosition() - 0.2);
+            }
+            telemetry.addData("testservo", robot.testservo.getPosition());
+        }
+
+        if (robot.liftMotor != null) {
+            if (gamepad1.dpad_up) {
+                robot.liftMotor.setPower(0.25);
+            } else if (gamepad1.dpad_down){
+                robot.liftMotor.setPower(-0.25);
+            } else {
+                robot.liftMotor.setPower(0);
+            }
+            telemetry.addData("liftmotor", robot.leftMotor.getPower());
+        }
+
+        if (robot.grabber != null) {
+            robot.grabber.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+            telemetry.addData("grabber", robot.grabber.getPower());
+        }
+
         telemetry.update();
     }
 

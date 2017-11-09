@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.AccelerationSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -26,8 +26,15 @@ public class HardwareBot {
     /* Public OpMode members. */
     public DcMotor  leftMotor;
     public DcMotor  rightMotor;
-    public DcMotor testmotor1;
-    public DcMotor testmotor2;
+
+    // Motors (fr = front right)
+    public DcMotor fr;
+    public DcMotor fl;
+    public DcMotor br;
+    public DcMotor bl;
+
+    public DcMotor liftMotor;
+    public DcMotor grabber;
     public Servo testservo;
 //    public AccelerationSensor accel;
 
@@ -42,7 +49,60 @@ public class HardwareBot {
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
+        normalDrive(hwMap);
 
+
+//        // Set up the testservo
+//        testservo = hwMap.servo.get("testservo");
+//        testservo.resetDeviceConfigurationForOpMode();
+//        testservo.setPosition(0);
+
+        lift(hwMap);
+        grab(hwMap);
+    }
+
+    public void lift(HardwareMap map) {
+        liftMotor = map.dcMotor.get("lift");
+        liftMotor.setPower(0);
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void grab(HardwareMap map) {
+        grabber = map.dcMotor.get("grabber");
+        grabber.setPower(0);
+        grabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        grabber.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void mecanum(HardwareMap map) {
+        fr = map.dcMotor.get("fr");
+        fl = map.dcMotor.get("fl");
+        br = map.dcMotor.get("br");
+        bl = map.dcMotor.get("bl");
+
+        fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        fr.setPower(0);
+        fl.setPower(0);
+        br.setPower(0);
+        bl.setPower(0);
+
+        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void normalDrive(HardwareMap map) {
         // Define and Initialize Motors
 //        accel = hwMap.accelerationSensor.get("accel");
         leftMotor   = hwMap.dcMotor.get("left_drive");
@@ -60,22 +120,6 @@ public class HardwareBot {
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // Set up the testservo
-        testservo = hwMap.servo.get("testservo");
-        testservo.resetDeviceConfigurationForOpMode();
-        testservo.setPosition(0);
-
-        // Set up the testmotor
-        testmotor1 = hwMap.dcMotor.get("testmotor1");
-        testmotor1.setPower(0);
-        testmotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        testmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        testmotor2 = hwMap.dcMotor.get("testmotor2");
-        testmotor2.setPower(0);
-        testmotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        testmotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /***

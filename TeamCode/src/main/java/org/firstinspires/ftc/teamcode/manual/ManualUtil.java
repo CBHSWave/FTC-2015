@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.manual;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
+
 /**
  * Created by wjackson on 9/22/2017.
  */
@@ -34,5 +37,36 @@ public class ManualUtil {
 
         // return scaled value.
         return dScale;
+    }
+
+    public static void normalDriveGeneral(Gamepad pad, DcMotor[] leftmotors, DcMotor[] rightmotors) {
+        for (DcMotor left : leftmotors) {
+            left.setPower(scale(pad.left_stick_y));
+        }
+
+        for (DcMotor right : rightmotors) {
+            right.setPower(scale(pad.right_stick_y));
+        }
+    }
+
+    public static void normalDrive(Gamepad pad, DcMotor leftmotor, DcMotor rightmotor) {
+        leftmotor.setPower(scale(pad.left_stick_y));
+        rightmotor.setPower(scale(pad.right_stick_y));
+    }
+
+    public static void mecanumDrive(Gamepad pad, double threshhold,
+                                    DcMotor frontleft, DcMotor frontright,
+                                    DcMotor backleft, DcMotor backright) {
+        frontleft.setPower((-pad.left_stick_y - pad.left_stick_x)/2);
+        frontright.setPower((pad.left_stick_y - pad.left_stick_x)/2);
+        backleft.setPower((pad.left_stick_y - pad.left_stick_x)/2);
+        backright.setPower((-pad.left_stick_y - pad.left_stick_x)/2);
+
+        if (pad.right_stick_x > threshhold || pad.right_stick_x < -threshhold) {
+            frontleft.setPower(-pad.right_stick_x);
+            frontright.setPower(-pad.right_stick_x);
+            backleft.setPower(pad.right_stick_x);
+            backright.setPower(pad.right_stick_x);
+        }
     }
 }
