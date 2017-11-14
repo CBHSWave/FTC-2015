@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import java.util.HashMap;
@@ -16,10 +17,10 @@ public class AutoUtil {
     private final double TICKS_PER_CM;
     private final double RADIUS;
     private final double CIRC;
-    private final LinearOpMode OP_MODE;
+    private final OpMode OP_MODE;
 
     // This constructor will allow you to access the AutoUtil class and set the variables it needs
-    public AutoUtil(double TICKS_PER_CM, double RADIUS, LinearOpMode OP_MODE) {
+    public AutoUtil(double TICKS_PER_CM, double RADIUS, OpMode OP_MODE) {
         this.TICKS_PER_CM = TICKS_PER_CM;
         this.RADIUS = RADIUS;
         this.OP_MODE = OP_MODE;
@@ -49,22 +50,30 @@ public class AutoUtil {
         goDistanceMap(powers, cms);
     }
 
-    public void zeroTurn(DcMotor left, DcMotor right, double angle) {
+    public void zeroTurnMod(DcMotor[] lefts, DcMotor[] rights, double angle) {
 
         // Establish the HashMaps we will use to invoke the goDistanceMap function
         HashMap<DcMotor, Float> powers = new HashMap<>();
         HashMap<DcMotor, Double> cms = new HashMap<>();
 
         // Set up the powers with equal and opposite for zero-turning affect
-        powers.put(left, Float.valueOf(angle < 0 ? 1 : -1));
-        powers.put(right, Float.valueOf(angle < 0 ? -1 : 1));
+        for (DcMotor left : lefts) {
+            powers.put(left, Float.valueOf(angle < 0 ? 1 : -1));
+            cms.put(left, angleToDistance(Math.abs(angle)));
+        }
+        for (DcMotor right : rights) {
+            powers.put(right, Float.valueOf(angle < 0 ? -1 : 1));
+            cms.put(right, angleToDistance(Math.abs(angle)));
+        }
 
         // Convert the angles into a distance in centimeters to use
-        cms.put(left, angleToDistance(Math.abs(angle)));
-        cms.put(right, angleToDistance(Math.abs(angle)));
 
         // Invoke the goDistanceMap function
         goDistanceMap(powers, cms);
+    }
+
+    public void zeroTurn(DcMotor left, DcMotor right, double angle) {
+        zeroTurnMod(new DcMotor[]{left}, new DcMotor[]{right}, angle);
     }
 
     public void goDistanceMap(HashMap<DcMotor, Float> motors, HashMap<DcMotor, Double> cm) {
@@ -81,8 +90,9 @@ public class AutoUtil {
         }
 
         // While the OpMode remains active and the there are motors (starts) remaining...
-        while (OP_MODE.opModeIsActive() && !starts.isEmpty()) {
-
+        boolean active = true;
+        while (active && !starts.isEmpty()) {
+            active = !(OP_MODE instanceof LinearOpMode) || ((LinearOpMode) OP_MODE).opModeIsActive();
             // Loop through each motor...
             for (DcMotor motor : motors.keySet()) {
 
@@ -94,6 +104,27 @@ public class AutoUtil {
                     starts.remove(motor);
                 }
             }
+        }
+    }
+
+    public void runUntilEncoder(DcMotor motor, float encoderTicks){
+        if (motor.getCurrentPosition() != encoderTicks) {
+            boolean dir = motor.getCurrentPosition() < encoderTicks;
+            motor.setPower(dir ? 1 : -1);
+            if (dir) {
+                while (dir) {
+                    dir = motor.getCurrentPosition() < encoderTicks;
+                    OP_MODE.telemetry.addData("RUNUNTIL", motor.getCurrentPosition());
+                    OP_MODE.telemetry.update();
+                }
+            } else {
+                while (!dir) {
+                    dir = motor.getCurrentPosition() < encoderTicks;
+                    OP_MODE.telemetry.addData("RUNUNTIL", motor.getCurrentPosition());
+                    OP_MODE.telemetry.update();
+                }
+            }
+            motor.setPower(0);
         }
     }
 
