@@ -75,13 +75,13 @@ public class ManualBot extends OpMode{
             telemetry.addData("testservo", robot.testservo.getPosition());
         }
 
-        if (robot.liftMotor != null) {
+        if (robot.lift != null) {
             if (gamepad1.dpad_up) {
-                robot.liftMotor.setPower(0.25);
+                robot.lift.setPower(0.25);
             } else if (gamepad1.dpad_down){
-                robot.liftMotor.setPower(-0.25);
+                robot.lift.setPower(-0.25);
             } else {
-                robot.liftMotor.setPower(0);
+                robot.lift.setPower(0);
             }
             telemetry.addData("liftmotor", robot.leftMotor.getPower());
         }

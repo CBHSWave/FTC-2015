@@ -33,7 +33,8 @@ public class HardwareBot {
     public DcMotor br;
     public DcMotor bl;
 
-    public DcMotor liftMotor;
+    public DcMotor lift;
+    public DcMotor lead;
     public DcMotor grabber;
     public Servo testservo;
 //    public AccelerationSensor accel;
@@ -49,7 +50,7 @@ public class HardwareBot {
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
-        normalDrive(hwMap);
+        mecanum(hwMap);
 
 
 //        // Set up the testservo
@@ -58,17 +59,31 @@ public class HardwareBot {
 //        testservo.setPosition(0);
 
         lift(hwMap);
-        grab(hwMap);
+        grabber(hwMap);
+    }
+
+    public void ironwood(HardwareMap map) {
+        //mecanum(map);
+
+        // PELICAN
+        lift(map);
     }
 
     public void lift(HardwareMap map) {
-        liftMotor = map.dcMotor.get("lift");
-        liftMotor.setPower(0);
-        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lift = map.dcMotor.get("lift");
+        lift.setPower(0);
+        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void grab(HardwareMap map) {
+    public void lead(HardwareMap map) {
+        lead = map.dcMotor.get("lift");
+        lead.setPower(0);
+        lead.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lead.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void grabber(HardwareMap map) {
         grabber = map.dcMotor.get("grabber");
         grabber.setPower(0);
         grabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
