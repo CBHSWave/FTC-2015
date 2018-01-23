@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.manual;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.HardwareBot;
 
@@ -21,10 +22,11 @@ public class ManualBot extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        robot.init(hardwareMap);
+        robot.mecanum(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
+        telemetry.update();
     }
 
     /*
@@ -46,33 +48,21 @@ public class ManualBot extends OpMode{
      */
     @Override
     public void loop() {
-        telemetry.addData("*TEST*", "");
-
-
         if (robot.fl != null && robot.fr != null && robot.bl != null && robot.br != null) {
             ManualUtil.mecanumDrive(gamepad1, 0.1,
                     robot.fl, robot.fr,
                     robot.bl, robot.br);
-            telemetry.addData("fl", robot.fl.getPower());
-            telemetry.addData("fr", robot.fr.getPower());
-            telemetry.addData("bl", robot.bl.getPower());
-            telemetry.addData("br", robot.br.getPower());
+//            telemetry.addData("fl", robot.fl.getPower());
+//            telemetry.addData("fr", robot.fr.getPower());
+//            telemetry.addData("bl", robot.bl.getPower());
+//            telemetry.addData("br", robot.br.getPower());
         }
 
         if (robot.leftMotor != null && robot.rightMotor != null) {
             ManualUtil.normalDrive(gamepad1, robot.leftMotor, robot.rightMotor);
 
-            telemetry.addData("leftmotor", robot.leftMotor.getPower());
-            telemetry.addData("rightmotor", robot.rightMotor.getPower());
-        }
-
-        if (robot.testservo != null) {
-            if (gamepad1.dpad_up) {
-                robot.testservo.setPosition(robot.testservo.getPosition() + 0.2);
-            } else if (gamepad1.dpad_down) {
-                robot.testservo.setPosition(robot.testservo.getPosition() - 0.2);
-            }
-            telemetry.addData("testservo", robot.testservo.getPosition());
+//            telemetry.addData("leftmotor", robot.leftMotor.getPower());
+//            telemetry.addData("rightmotor", robot.rightMotor.getPower());
         }
 
         if (robot.lift != null) {
@@ -83,14 +73,23 @@ public class ManualBot extends OpMode{
             } else {
                 robot.lift.setPower(0);
             }
-            telemetry.addData("liftmotor", robot.leftMotor.getPower());
+//            telemetry.addData("liftmotor", robot.leftMotor.getPower());
         }
 
-        if (robot.grabber != null) {
-            robot.grabber.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
-            telemetry.addData("grabber", robot.grabber.getPower());
+        if (robot.leftIn != null && robot.rightIn != null) {
+            if (gamepad1.right_bumper) {
+                robot.leftIn.setPower(1);
+                robot.rightIn.setPower(1);
+            } else if (gamepad1.left_bumper){
+                robot.leftIn.setPower(-1);
+                robot.rightIn.setPower(-1);
+            } else {
+                robot.leftIn.setPower(0);
+                robot.rightIn.setPower(0);
+            }
         }
 
+        robot.allTelemetry(telemetry, hardwareMap);
         telemetry.update();
     }
 
@@ -99,6 +98,9 @@ public class ManualBot extends OpMode{
      */
     @Override
     public void stop() {
+        for (DcMotor motor : robot.motors) {
+            motor.setPower(0);
+        }
     }
 
 }

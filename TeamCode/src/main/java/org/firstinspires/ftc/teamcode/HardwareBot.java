@@ -6,6 +6,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * This is NOT an opmode.
  *
@@ -36,58 +41,58 @@ public class HardwareBot {
     public DcMotor lift;
     public DcMotor lead;
     public DcMotor grabber;
-    public Servo testservo;
+
+    public ArrayList<DcMotor> motors;
+    private ArrayList<Servo> servos;
+    public DcMotor leftIn;
+    public DcMotor rightIn;
+
 //    public AccelerationSensor accel;
 
     /* local OpMode members. */
-    HardwareMap hwMap;
     private ElapsedTime period  = new ElapsedTime();
+
 
     /* Constructor */
     public HardwareBot(){}
 
-    /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
-        // Save reference to Hardware map
-        hwMap = ahwMap;
-        mecanum(hwMap);
-
-
-//        // Set up the testservo
-//        testservo = hwMap.servo.get("testservo");
-//        testservo.resetDeviceConfigurationForOpMode();
-//        testservo.setPosition(0);
-
-        lift(hwMap);
-        grabber(hwMap);
+    public void setupServo(Servo servo) {
+        servo.setPosition(0);
+        servos.add(servo);
     }
 
-    public void ironwood(HardwareMap map) {
-        //mecanum(map);
-
-        // PELICAN
-        lift(map);
+    public void setupMotor(DcMotor motor, boolean encoder) {
+        motor.setPower(0);
+        if (encoder) {
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        } else {
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        motors.add(motor);
     }
 
     public void lift(HardwareMap map) {
         lift = map.dcMotor.get("lift");
-        lift.setPower(0);
-        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        setupMotor(lift, true);
     }
 
     public void lead(HardwareMap map) {
         lead = map.dcMotor.get("lift");
-        lead.setPower(0);
-        lead.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lead.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        setupMotor(lead, true);
     }
 
     public void grabber(HardwareMap map) {
         grabber = map.dcMotor.get("grabber");
-        grabber.setPower(0);
-        grabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        grabber.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        setupMotor(grabber, true);
+    }
+
+    public void intake(HardwareMap map) {
+        leftIn = map.dcMotor.get("leftIn");
+        rightIn = map.dcMotor.get("rightIn");
+
+        setupMotor(leftIn, true);
+        setupMotor(rightIn, true);
     }
 
     public void mecanum(HardwareMap map) {
@@ -101,40 +106,49 @@ public class HardwareBot {
         br.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        fr.setPower(0);
-        fl.setPower(0);
-        br.setPower(0);
-        bl.setPower(0);
-
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        setupMotor(fr, true);
+        setupMotor(br, true);
+        setupMotor(fl, true);
+        setupMotor(bl, true);
     }
 
     public void normalDrive(HardwareMap map) {
         // Define and Initialize Motors
-//        accel = hwMap.accelerationSensor.get("accel");
-        leftMotor   = hwMap.dcMotor.get("left_drive");
-        rightMotor  = hwMap.dcMotor.get("right_drive");
+//        accel = map.accelerationSensor.get("accel");
+        leftMotor   = map.dcMotor.get("left");
+        rightMotor  = map.dcMotor.get("right");
         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
-        // Set all motors to zero power
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+        setupMotor(leftMotor, true);
+        setupMotor(rightMotor, true);
+    }
 
-        // Set all motors to run without encoders.
-        // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    public void motorTelemetry(Telemetry telemetry, HardwareMap map) {
+        for (DcMotor motor : motors) {
+            if (motor != null) {
+                Iterator<String> iterator = map.getNamesOf(motor).iterator();
+                if (iterator.hasNext()) {
+                    telemetry.addData(iterator.next(), motor.getPower());
+                }
+            }
+        }
+    }
+
+    public void servoTelemetry(Telemetry telemetry, HardwareMap map) {
+        for (Servo servo : servos) {
+            if (servo != null) {
+                Iterator<String> iterator = map.getNamesOf(servo).iterator();
+                if (iterator.hasNext()) {
+                    telemetry.addData(iterator.next(), servo.getPosition());
+                }
+            }
+        }
+    }
+
+    public void allTelemetry(Telemetry telemetry, HardwareMap map) {
+        motorTelemetry(telemetry, map);
+        servoTelemetry(telemetry, map);
     }
 
     /***

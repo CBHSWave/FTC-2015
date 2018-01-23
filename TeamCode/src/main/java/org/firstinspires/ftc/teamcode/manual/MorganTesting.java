@@ -21,7 +21,10 @@ public class MorganTesting extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        robot.init(hardwareMap);
+        robot.normalDrive(hardwareMap);
+        robot.lead(hardwareMap);
+        robot.lift(hardwareMap);
+        robot.grabber(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -68,15 +71,6 @@ public class MorganTesting extends OpMode{
 
             telemetry.addData("leftmotor", robot.leftMotor.getPower());
             telemetry.addData("rightmotor", robot.rightMotor.getPower());
-        }
-
-        if (robot.testservo != null) {
-            if (gamepad1.dpad_up) {
-                robot.testservo.setPosition(robot.testservo.getPosition() + 0.2);
-            } else if (gamepad1.dpad_down) {
-                robot.testservo.setPosition(robot.testservo.getPosition() - 0.2);
-            }
-            telemetry.addData("testservo", robot.testservo.getPosition());
         }
 
         if (robot.lift != null) {
