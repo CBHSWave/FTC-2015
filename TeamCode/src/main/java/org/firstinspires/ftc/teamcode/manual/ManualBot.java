@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.HardwareBot;
 
 @TeleOp(name="Manual", group="Manual")
-public class ManualBot extends OpMode{
+public class ManualBot extends OpMode {
 
     private static final float TEST_MOTOR_POW = 1;
     /* Declare OpMode members. */
@@ -23,6 +23,9 @@ public class ManualBot extends OpMode{
          * The init() method of the hardware class does all the work here
          */
         robot.mecanum(hardwareMap);
+        robot.intake(hardwareMap);
+        robot.lift(hardwareMap);
+        robot.flippy(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -66,9 +69,9 @@ public class ManualBot extends OpMode{
         }
 
         if (robot.lift != null) {
-            if (gamepad1.dpad_up) {
+            if (gamepad1.b) {
                 robot.lift.setPower(0.25);
-            } else if (gamepad1.dpad_down){
+            } else if (gamepad1.a){
                 robot.lift.setPower(-0.25);
             } else {
                 robot.lift.setPower(0);
@@ -77,16 +80,21 @@ public class ManualBot extends OpMode{
         }
 
         if (robot.leftIn != null && robot.rightIn != null) {
-            if (gamepad1.right_bumper) {
-                robot.leftIn.setPower(1);
-                robot.rightIn.setPower(1);
-            } else if (gamepad1.left_bumper){
-                robot.leftIn.setPower(-1);
-                robot.rightIn.setPower(-1);
+            if (gamepad1.right_bumper || gamepad1.left_bumper) {
+                robot.rightIn.setPower(-gamepad1.right_trigger);
+                robot.leftIn.setPower(-gamepad1.left_trigger);
             } else {
-                robot.leftIn.setPower(0);
-                robot.rightIn.setPower(0);
+                robot.rightIn.setPower(gamepad1.right_trigger);
+                robot.leftIn.setPower(gamepad1.left_trigger);
             }
+        }
+
+        if (gamepad1.y) {
+            robot.flippy.setPower(0.2);
+        } else if (gamepad1.x) {
+            robot.flippy.setPower(-0.1);
+        } else {
+            robot.flippy.setPower(0);
         }
 
         robot.allTelemetry(telemetry, hardwareMap);

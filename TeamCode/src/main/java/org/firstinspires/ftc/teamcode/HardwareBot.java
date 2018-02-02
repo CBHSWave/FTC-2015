@@ -41,9 +41,10 @@ public class HardwareBot {
     public DcMotor lift;
     public DcMotor lead;
     public DcMotor grabber;
+    public DcMotor flippy;
 
-    public ArrayList<DcMotor> motors;
-    private ArrayList<Servo> servos;
+    public ArrayList<DcMotor> motors = new ArrayList<>();
+    private ArrayList<Servo> servos = new ArrayList<>();
     public DcMotor leftIn;
     public DcMotor rightIn;
 
@@ -77,6 +78,11 @@ public class HardwareBot {
         setupMotor(lift, true);
     }
 
+    public void flippy(HardwareMap map) {
+        flippy = map.dcMotor.get("flippy");
+        setupMotor(flippy, true);
+    }
+
     public void lead(HardwareMap map) {
         lead = map.dcMotor.get("lift");
         setupMotor(lead, true);
@@ -89,6 +95,7 @@ public class HardwareBot {
 
     public void intake(HardwareMap map) {
         leftIn = map.dcMotor.get("leftIn");
+        leftIn.setDirection(DcMotorSimple.Direction.REVERSE);
         rightIn = map.dcMotor.get("rightIn");
 
         setupMotor(leftIn, true);
