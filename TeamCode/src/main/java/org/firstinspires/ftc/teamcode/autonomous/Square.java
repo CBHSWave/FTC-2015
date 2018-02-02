@@ -16,7 +16,6 @@ public class Square extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Setup hardware and then wait for start of the OpMode
-        robot.init(hardwareMap);
         waitForStart();
 
 

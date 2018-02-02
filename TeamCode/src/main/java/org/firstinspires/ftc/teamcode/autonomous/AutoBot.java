@@ -16,7 +16,6 @@ public class AutoBot extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Setup hardware and then wait for start of the OpMode
-        robot.init(hardwareMap);
         waitForStart();
 
         // Go forward on the motors for 100 cm
