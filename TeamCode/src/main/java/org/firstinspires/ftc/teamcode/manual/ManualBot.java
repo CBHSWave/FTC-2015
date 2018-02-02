@@ -55,17 +55,10 @@ public class ManualBot extends OpMode {
             ManualUtil.mecanumDrive(gamepad1, 0.1,
                     robot.fl, robot.fr,
                     robot.bl, robot.br);
-//            telemetry.addData("fl", robot.fl.getPower());
-//            telemetry.addData("fr", robot.fr.getPower());
-//            telemetry.addData("bl", robot.bl.getPower());
-//            telemetry.addData("br", robot.br.getPower());
         }
 
         if (robot.leftMotor != null && robot.rightMotor != null) {
             ManualUtil.normalDrive(gamepad1, robot.leftMotor, robot.rightMotor);
-
-//            telemetry.addData("leftmotor", robot.leftMotor.getPower());
-//            telemetry.addData("rightmotor", robot.rightMotor.getPower());
         }
 
         if (robot.lift != null) {
@@ -76,7 +69,6 @@ public class ManualBot extends OpMode {
             } else {
                 robot.lift.setPower(0);
             }
-//            telemetry.addData("liftmotor", robot.leftMotor.getPower());
         }
 
         if (robot.leftIn != null && robot.rightIn != null) {
