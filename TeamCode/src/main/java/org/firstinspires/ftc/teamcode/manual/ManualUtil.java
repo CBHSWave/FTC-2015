@@ -57,10 +57,23 @@ public class ManualUtil {
     public static void mecanumDrive(Gamepad pad, double threshhold,
                                     DcMotor frontleft, DcMotor frontright,
                                     DcMotor backleft, DcMotor backright) {
-        frontleft.setPower((-pad.left_stick_y - pad.left_stick_x)/2);
-        frontright.setPower((pad.left_stick_y - pad.left_stick_x)/2);
-        backleft.setPower((pad.left_stick_y - pad.left_stick_x)/2);
-        backright.setPower((-pad.left_stick_y - pad.left_stick_x)/2);
+        double flPow = -pad.left_stick_y - pad.left_stick_x;
+        double frPow = pad.left_stick_y - pad.left_stick_x;
+        double blPow = pad.left_stick_y - pad.left_stick_x;
+        double brPow = -pad.left_stick_y - pad.left_stick_x;
+        double mult = 2/5;
+
+        if (pad.left_stick_button) {
+            frontleft.setPower(flPow);
+            frontright.setPower(frPow);
+            backleft.setPower(blPow);
+            backright.setPower(brPow);
+        } else {
+            frontleft.setPower(flPow * mult);
+            frontright.setPower(frPow * mult);
+            backleft.setPower(blPow * mult);
+            backright.setPower(brPow * mult);
+        }
 
         if (pad.right_stick_x > threshhold || pad.right_stick_x < -threshhold) {
             frontleft.setPower(pad.right_stick_x);
