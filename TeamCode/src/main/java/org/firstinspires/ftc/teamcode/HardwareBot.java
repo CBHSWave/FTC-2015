@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -28,7 +31,7 @@ import java.util.Iterator;
  * Servo channel:  Servo to open right claw: "right_hand"
  */
 public class HardwareBot {
-    /* Public OpMode members. */
+    /* PublicOpMode members. */
     public DcMotor  leftMotor;
     public DcMotor  rightMotor;
 
@@ -132,7 +135,7 @@ public class HardwareBot {
     }
 
     public void motorTelemetry(Telemetry telemetry, HardwareMap map) {
-        for (DcMotor motor : motors) {
+        for (DcMotor motor : map.dcMotor) {
             if (motor != null) {
                 Iterator<String> iterator = map.getNamesOf(motor).iterator();
                 if (iterator.hasNext()) {
@@ -143,7 +146,7 @@ public class HardwareBot {
     }
 
     public void servoTelemetry(Telemetry telemetry, HardwareMap map) {
-        for (Servo servo : servos) {
+        for (Servo servo : map.servo) {
             if (servo != null) {
                 Iterator<String> iterator = map.getNamesOf(servo).iterator();
                 if (iterator.hasNext()) {

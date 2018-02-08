@@ -61,25 +61,17 @@ public class ManualUtil {
         double frPow = pad.left_stick_y - pad.left_stick_x;
         double blPow = pad.left_stick_y - pad.left_stick_x;
         double brPow = -pad.left_stick_y - pad.left_stick_x;
-        double mult = 0.4;
 
-//        if (pad.left_stick_button) {
-//            frontleft.setPower(flPow);
-//            frontright.setPower(frPow);
-//            backleft.setPower(blPow);
-//            backright.setPower(brPow);
-//        } else {
-            frontleft.setPower(flPow / 2);
-            frontright.setPower(frPow / 2);
-            backleft.setPower(blPow / 2);
-            backright.setPower(brPow / 2);
-//        }
+        frontleft.setPower(flPow / 2);
+        frontright.setPower(frPow / 2);
+        backleft.setPower(blPow / 2);
+        backright.setPower(brPow / 2);
 
         if (pad.right_stick_x > threshhold || pad.right_stick_x < -threshhold) {
-            frontleft.setPower(pad.right_stick_x);
-            frontright.setPower(pad.right_stick_x);
-            backleft.setPower(-pad.right_stick_x);
-            backright.setPower(-pad.right_stick_x);
+            frontleft.setPower(pad.right_stick_x/2);
+            frontright.setPower(pad.right_stick_x/2);
+            backleft.setPower(-pad.right_stick_x/2);
+            backright.setPower(-pad.right_stick_x/2);
         }
     }
 }

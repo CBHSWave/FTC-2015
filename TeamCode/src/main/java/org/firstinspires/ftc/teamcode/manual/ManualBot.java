@@ -13,8 +13,6 @@ public class ManualBot extends OpMode {
     /* Declare OpMode members. */
     HardwareBot robot       = new HardwareBot(); // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class.
-    boolean toggleOrientation = false;
-    boolean lastBack = false;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -54,15 +52,9 @@ public class ManualBot extends OpMode {
     @Override
     public void loop() {
         if (robot.fl != null && robot.fr != null && robot.bl != null && robot.br != null) {
-            if (toggleOrientation) {
-                ManualUtil.mecanumDrive(gamepad1, 0.1,
-                        robot.br, robot.bl,
-                        robot.fl, robot.fr);
-            } else {
-                ManualUtil.mecanumDrive(gamepad1, 0.1,
-                        robot.fl, robot.fr,
-                        robot.bl, robot.br);
-            }
+            ManualUtil.mecanumDrive(gamepad1, 0.1,
+                    robot.fl, robot.fr,
+                    robot.bl, robot.br);
         }
 
         if (robot.leftMotor != null && robot.rightMotor != null) {
@@ -97,11 +89,6 @@ public class ManualBot extends OpMode {
             robot.flippy.setPower(0);
         }
 
-        if (gamepad1.back && !lastBack) {
-            toggleOrientation = !toggleOrientation;
-        }
-
-        lastBack = gamepad1.back;
         robot.allTelemetry(telemetry, hardwareMap);
         telemetry.update();
     }
