@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.HardwareBot;
 
-@TeleOp(name="Manual", group="Manual")
+@TeleOp(name="OurBot", group="Manual")
 public class ManualBot extends OpMode {
 
     private static final float TEST_MOTOR_POW = 1;
@@ -52,7 +52,7 @@ public class ManualBot extends OpMode {
     @Override
     public void loop() {
         if (robot.fl != null && robot.fr != null && robot.bl != null && robot.br != null) {
-            ManualUtil.mecanumDrive(gamepad1, 0.1,
+            ManualUtil.mecanumDrive(gamepad1, 0.5,
                     robot.fl, robot.fr,
                     robot.bl, robot.br);
         }

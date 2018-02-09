@@ -62,10 +62,10 @@ public class ManualUtil {
         double blPow = pad.left_stick_y - pad.left_stick_x;
         double brPow = -pad.left_stick_y - pad.left_stick_x;
 
-        frontleft.setPower(flPow / 2);
-        frontright.setPower(frPow / 2);
-        backleft.setPower(blPow / 2);
-        backright.setPower(brPow / 2);
+        frontleft.setPower(scale(flPow) / 2);
+        frontright.setPower(scale(frPow) / 2);
+        backleft.setPower(scale(blPow) / 2);
+        backright.setPower(scale(brPow) / 2);
 
         if (pad.right_stick_x > threshhold || pad.right_stick_x < -threshhold) {
             frontleft.setPower(pad.right_stick_x/2);

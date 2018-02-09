@@ -135,7 +135,7 @@ public class HardwareBot {
     }
 
     public void motorTelemetry(Telemetry telemetry, HardwareMap map) {
-        for (DcMotor motor : map.dcMotor) {
+        for (DcMotor motor : motors) {
             if (motor != null) {
                 Iterator<String> iterator = map.getNamesOf(motor).iterator();
                 if (iterator.hasNext()) {
