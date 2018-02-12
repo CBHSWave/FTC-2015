@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.manual;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.HardwareBot;
+
 /**
  * Created by wjackson on 9/22/2017.
  */
@@ -73,6 +75,18 @@ public class ManualUtil {
             frontright.setPower(pad.right_stick_x);
             backleft.setPower(-pad.right_stick_x);
             backright.setPower(-pad.right_stick_x);
+        }
+    }
+
+    public static void drive(HardwareBot robot, Gamepad pad) {
+        if (robot.fl != null && robot.fr != null && robot.bl != null && robot.br != null) {
+            mecanumDrive(pad, 0.1,
+                    robot.fl, robot.fr,
+                    robot.bl, robot.br);
+        }
+
+        if (robot.leftMotor != null && robot.rightMotor != null) {
+            normalDrive(pad, robot.leftMotor, robot.rightMotor);
         }
     }
 }

@@ -51,15 +51,7 @@ public class OurBot extends OpMode {
      */
     @Override
     public void loop() {
-        if (robot.fl != null && robot.fr != null && robot.bl != null && robot.br != null) {
-            ManualUtil.mecanumDrive(gamepad1, 0.1,
-                    robot.fl, robot.fr,
-                    robot.bl, robot.br);
-        }
-
-        if (robot.leftMotor != null && robot.rightMotor != null) {
-            ManualUtil.normalDrive(gamepad1, robot.leftMotor, robot.rightMotor);
-        }
+        ManualUtil.drive(robot, gamepad1);
 
         if (robot.lift != null) {
             if (gamepad1.b) {
