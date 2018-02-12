@@ -68,10 +68,10 @@ public class ManualUtil {
         backright.setPower(scale(brPow) / 2);
 
         if (pad.right_stick_x > threshhold || pad.right_stick_x < -threshhold) {
-            frontleft.setPower(pad.right_stick_x/2);
-            frontright.setPower(pad.right_stick_x/2);
-            backleft.setPower(-pad.right_stick_x/2);
-            backright.setPower(-pad.right_stick_x/2);
+            frontleft.setPower(pad.right_stick_x);
+            frontright.setPower(pad.right_stick_x);
+            backleft.setPower(-pad.right_stick_x);
+            backright.setPower(-pad.right_stick_x);
         }
     }
 }

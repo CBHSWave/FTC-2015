@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -54,7 +51,7 @@ public class HardwareBot {
 //    public AccelerationSensor accel;
 
     /* local OpMode members. */
-    private ElapsedTime period  = new ElapsedTime();
+    public ElapsedTime period  = new ElapsedTime();
 
 
     /* Constructor */
@@ -110,16 +107,16 @@ public class HardwareBot {
         fl = map.dcMotor.get("fl");
         br = map.dcMotor.get("br");
         bl = map.dcMotor.get("bl");
+//
+//        fr.setDirection(DcMotorSimple.Direction.REVERSE);
+//        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+//        br.setDirection(DcMotorSimple.Direction.FORWARD);
+//        bl.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        setupMotor(fr, true);
-        setupMotor(br, true);
-        setupMotor(fl, true);
-        setupMotor(bl, true);
+        setupMotor(fr, false);
+        setupMotor(br, false);
+        setupMotor(fl, false);
+        setupMotor(bl, false);
     }
 
     public void normalDrive(HardwareMap map) {
