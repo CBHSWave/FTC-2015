@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.HardwareBot;
 
-@TeleOp(name="OurBot2", group="Manual")
+@TeleOp(name="OurBot", group="Manual")
 public class OurBot extends OpMode {
 
     private static final float TEST_MOTOR_POW = 1;
