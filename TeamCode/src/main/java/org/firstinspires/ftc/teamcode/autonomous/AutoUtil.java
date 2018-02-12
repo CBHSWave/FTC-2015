@@ -29,7 +29,7 @@ public class AutoUtil {
 
     // This static method provides a default setup for the test bot's AutoUtil
     public static AutoUtil testBot(LinearOpMode OP_MODE) {
-        return new AutoUtil((23.33233 + 25.24073)/2, 23, OP_MODE);
+        return new AutoUtil((23.33233 + 25.24073)/2, 15.24/2, OP_MODE);
     }
 
     // This method goes forward for a specified distance in cm on the specified motors

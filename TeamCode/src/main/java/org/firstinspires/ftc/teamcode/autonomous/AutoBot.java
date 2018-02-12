@@ -2,33 +2,48 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.HardwareBot;
 
+import java.util.concurrent.TimeUnit;
+
 // Declare that the OpMode is Autonomous and is named AutoBot
 @Autonomous(name="AutoBot", group="Auto")
-public class AutoBot extends LinearOpMode {
+public class AutoBot extends OpMode {
 
     /* Declare OpMode members. */
-    HardwareBot robot   = new HardwareBot();   // Use our hardware
-    private AutoUtil util = AutoUtil.testBot(this); // Create a testBot utility class with this OpMode
+
+    HardwareBot robot;
+    boolean done = false;
 
     @Override
-    public void runOpMode() {
-        // Setup hardware and then wait for start of the OpMode
-        waitForStart();
+    public void init(){
+        robot = new HardwareBot();   // Use our hardware
+        robot.mecanum(hardwareMap);
+    }
 
-        // Go forward on the motors for 100 cm
-        util.goForward(100, robot.leftMotor, robot.rightMotor);
+    @Override
+    public void loop() {
+        if (done) {
+            return;
+        }
 
-        // Zero Turn on the established motors for 90 degrees counterclockwise
-        util.zeroTurn(robot.leftMotor, robot.rightMotor, 90);
+        robot.fl.setPower(-0.5);
+        robot.br.setPower(-0.5);
+        robot.fr.setPower(0.5);
+        robot.bl.setPower(0.5);
 
-        // Go forward on the motors for 50 cm
-        util.goForward(50, robot.leftMotor, robot.rightMotor);
+        robot.period.reset();
+        while (robot.period.time(TimeUnit.MILLISECONDS) < 1000) {
+        }
 
-        // Wait until the user stops the OpMode
-        while(opModeIsActive()) {}
+        robot.fl.setPower(0);
+        robot.br.setPower(0);
+        robot.fr.setPower(0);
+        robot.bl.setPower(0);
+        robot.period.reset();
+        done = true;
     }
 }
 
