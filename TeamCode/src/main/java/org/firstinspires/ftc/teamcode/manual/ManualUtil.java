@@ -6,14 +6,20 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.teamcode.HardwareBot;
 
 /**
+ * This class should handle common Manual OpMode utilities
  * Created by wjackson on 9/22/2017.
  */
 
 public class ManualUtil {
 
-    // Method for scaling inputs to the motors from the gamepad to allow for more natural controls
-    // Given by FTC
+    /**
+     * Method for scaling inputs to the motors from the gamepad to allow for more natural controls
+     * Given by FTC
+     * @param value value to scale
+     * @return the scaled value
+     */
     public static double scale(double value) {
+        // Defines the gradient on the scaling
         double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
                 0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00 };
 
@@ -42,35 +48,67 @@ public class ManualUtil {
         return dScale;
     }
 
+    /**
+     * Tank Drive code in a general sense
+     * Assigns all left motors to the left stick's y-value and all right motors the right stick's
+     * y-value
+     * @param pad gamepad to use
+     * @param leftmotors all the left motors
+     * @param rightmotors all the right motors
+     */
     public static void normalDriveGeneral(Gamepad pad, DcMotor[] leftmotors, DcMotor[] rightmotors) {
+        // Loop through the motors and set values
         for (DcMotor left : leftmotors) {
             left.setPower(scale(pad.left_stick_y));
         }
 
+        // Loop through the motors and set values
         for (DcMotor right : rightmotors) {
             right.setPower(scale(pad.right_stick_y));
         }
     }
 
+    /**
+     * Tank Drive Code for two motors
+     * @param pad gamepad to use
+     * @param leftmotor the left motor
+     * @param rightmotor the right motor
+     */
     public static void normalDrive(Gamepad pad, DcMotor leftmotor, DcMotor rightmotor) {
-        leftmotor.setPower(scale(pad.left_stick_y));
-        rightmotor.setPower(scale(pad.right_stick_y));
+        // Call into the general normal drive
+        normalDriveGeneral(pad, new DcMotor[]{leftmotor}, new DcMotor[]{rightmotor});
     }
 
-    public static void mecanumDrive(Gamepad pad, double threshhold,
+    /**
+     * Mecanum Drive code
+     * Left stick controls movement in any direction
+     * Right stick x-value controls rotation on a zero-turn center
+     * @param pad gamepad to use
+     * @param threshold threshold to begin rotating
+     * @param frontleft the motor in the front left position
+     * @param frontright the motor in the front right position
+     * @param backleft the motor in the back left position
+     * @param backright the motor in the back right position
+     */
+    public static void mecanumDrive(Gamepad pad, double threshold,
                                     DcMotor frontleft, DcMotor frontright,
                                     DcMotor backleft, DcMotor backright) {
+
+        // Assign the values for the different powers
+        // You can find these values online (check the FTC subreddit)
         double flPow = -pad.left_stick_y - pad.left_stick_x;
         double frPow = pad.left_stick_y - pad.left_stick_x;
         double blPow = pad.left_stick_y - pad.left_stick_x;
         double brPow = -pad.left_stick_y - pad.left_stick_x;
 
+        // Scale the values, half them, then set the power
         frontleft.setPower(scale(flPow) / 2);
         frontright.setPower(scale(frPow) / 2);
         backleft.setPower(scale(blPow) / 2);
         backright.setPower(scale(brPow) / 2);
 
-        if (pad.right_stick_x > threshhold || pad.right_stick_x < -threshhold) {
+        // Check if we've hit the threshold then rotate
+        if (pad.right_stick_x > threshold || pad.right_stick_x < -threshold) {
             frontleft.setPower(pad.right_stick_x);
             frontright.setPower(pad.right_stick_x);
             backleft.setPower(-pad.right_stick_x);
@@ -78,15 +116,26 @@ public class ManualUtil {
         }
     }
 
+    /**
+     * This method handles all the drive modes that we have available. It relies on a null
+     * check on the HardwareBot class
+     * @param robot the hardware we are using
+     * @param pad the gamepad the drive controls should be on
+     */
     public static void drive(HardwareBot robot, Gamepad pad) {
+        // Null check
         if (robot.fl != null && robot.fr != null && robot.bl != null && robot.br != null) {
+            // Call into the mecanum drive code with a 0.1 threshold
             mecanumDrive(pad, 0.1,
                     robot.fl, robot.fr,
                     robot.bl, robot.br);
         }
 
+        // Null check
         if (robot.leftMotor != null && robot.rightMotor != null) {
+            // Call into the tank drive code
             normalDrive(pad, robot.leftMotor, robot.rightMotor);
         }
     }
+
 }
