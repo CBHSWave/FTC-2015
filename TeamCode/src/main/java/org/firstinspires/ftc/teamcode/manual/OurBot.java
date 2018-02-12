@@ -81,12 +81,14 @@ public class OurBot extends OpMode {
             }
         }
 
-        if (gamepad1.y) {
-            robot.flippy.setPower(0.2);
-        } else if (gamepad1.x) {
-            robot.flippy.setPower(-0.1);
-        } else {
-            robot.flippy.setPower(0);
+        if (robot.flippy != null) {
+            if (gamepad1.y) {
+                robot.flippy.setPower(0.2);
+            } else if (gamepad1.x) {
+                robot.flippy.setPower(-0.1);
+            } else {
+                robot.flippy.setPower(0);
+            }
         }
 
         robot.allTelemetry(telemetry, hardwareMap);
