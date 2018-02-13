@@ -14,18 +14,9 @@ import java.util.Iterator;
 /**
  * This is NOT an opmode.
  *
- * This class can be used to define all the specific hardware for a single robot.
- * In this case that robot is a Pushbot.
- * See PushbotTeleopTank_Iterative and others classes starting with "Pushbot" for usage examples.
- *
- * This hardware class assumes the following device names have been configured on the robot:
- * Note:  All names are lower case and some have single spaces between words.
- *
- * Motor channel:  Left  drive motor:        "left_drive"
- * Motor channel:  Right drive motor:        "right_drive"
- * Motor channel:  Manipulator drive motor:  "left_arm"
- * Servo channel:  Servo to open left claw:  "left_hand"
- * Servo channel:  Servo to open right claw: "right_hand"
+ * This class can be used to define all the specific hardware for our robot
+ * Each different section of the design requires a method for initialization
+ * For example, the mecanum wheels can be initialized by calling the mecanum() method
  */
 public class HardwareBot {
     /* PublicOpMode members. */
@@ -133,7 +124,7 @@ public class HardwareBot {
     }
 
     public void motorTelemetry(Telemetry telemetry, HardwareMap map) {
-        for (DcMotor motor : motors) {
+        for (DcMotor motor : map.dcMotor) {
             if (motor != null) {
                 Iterator<String> iterator = map.getNamesOf(motor).iterator();
                 if (iterator.hasNext()) {
