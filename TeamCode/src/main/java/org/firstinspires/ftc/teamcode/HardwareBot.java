@@ -57,12 +57,13 @@ public class HardwareBot {
     /* Constructor */
     public HardwareBot(){}
 
-    public void setupServo(Servo servo) {
+    public Servo setupServo(Servo servo) {
         servo.setPosition(0);
         servos.add(servo);
+        return servo;
     }
 
-    public void setupMotor(DcMotor motor, boolean encoder) {
+    public DcMotor setupMotor(DcMotor motor, boolean encoder) {
         motor.setPower(0);
         if (encoder) {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -71,6 +72,7 @@ public class HardwareBot {
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
         motors.add(motor);
+        return motor;
     }
 
     public void lift(HardwareMap map) {
@@ -107,7 +109,7 @@ public class HardwareBot {
         fl = map.dcMotor.get("fl");
         br = map.dcMotor.get("br");
         bl = map.dcMotor.get("bl");
-//
+
 //        fr.setDirection(DcMotorSimple.Direction.REVERSE);
 //        fl.setDirection(DcMotorSimple.Direction.REVERSE);
 //        br.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -121,7 +123,6 @@ public class HardwareBot {
 
     public void normalDrive(HardwareMap map) {
         // Define and Initialize Motors
-//        accel = map.accelerationSensor.get("accel");
         leftMotor   = map.dcMotor.get("left");
         rightMotor  = map.dcMotor.get("right");
         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
