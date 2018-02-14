@@ -42,7 +42,7 @@ public class AutoUtil {
         // For each motor that was specified by the caller...
         for (DcMotor motor : motors) {
             // Put the power and the centimeters needed into the respective HashMaps
-            powers.put(motor, Float.valueOf(1));
+            powers.put(motor, 1f);
             cms.put(motor, cm);
         }
 
@@ -58,11 +58,11 @@ public class AutoUtil {
 
         // Set up the powers with equal and opposite for zero-turning affect
         for (DcMotor left : lefts) {
-            powers.put(left, Float.valueOf(angle < 0 ? 1 : -1));
+            powers.put(left, (float) (angle < 0 ? 1 : -1));
             cms.put(left, angleToDistance(Math.abs(angle)));
         }
         for (DcMotor right : rights) {
-            powers.put(right, Float.valueOf(angle < 0 ? -1 : 1));
+            powers.put(right, (float) (angle < 0 ? -1 : 1));
             cms.put(right, angleToDistance(Math.abs(angle)));
         }
 
