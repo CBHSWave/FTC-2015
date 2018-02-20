@@ -3,8 +3,12 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.general.Call;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by wjackson on 9/18/2017.
@@ -30,6 +34,34 @@ public class AutoUtil {
     // This static method provides a default setup for the test bot's AutoUtil
     public static AutoUtil testBot(LinearOpMode OP_MODE) {
         return new AutoUtil((23.33233 + 25.24073)/2, 15.24/2, OP_MODE);
+    }
+
+    public static void beforeAfter(Call before, Call after, ElapsedTime period, double milli) {
+        beforeAfterDuring(before, after, Call.empty, period, milli);
+    }
+
+    public static void during(Call during, ElapsedTime period, double milli) {
+        beforeAfterDuring(Call.empty, Call.empty, during, period, milli);
+    }
+
+    public static void beforeAfterDuring(Call before, Call after, Call during, ElapsedTime period, double milli) {
+        before.run();
+        double initial = period.milliseconds();
+        while (period.time(TimeUnit.MILLISECONDS) < milli + initial) {
+            during.run();
+        }
+        after.run();
+    }
+
+    static Call setMotorsCall(final double pow, final DcMotor[] motors) {
+        return new Call() {
+            @Override
+            public void run() {
+                for (DcMotor motor : motors) {
+                    motor.setPower(pow);
+                }
+            }
+        };
     }
 
     // This method goes forward for a specified distance in cm on the specified motors

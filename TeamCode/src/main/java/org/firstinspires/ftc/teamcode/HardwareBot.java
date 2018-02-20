@@ -101,10 +101,8 @@ public class HardwareBot {
         br = map.dcMotor.get("br");
         bl = map.dcMotor.get("bl");
 
-//        fr.setDirection(DcMotorSimple.Direction.REVERSE);
-//        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-//        br.setDirection(DcMotorSimple.Direction.FORWARD);
-//        bl.setDirection(DcMotorSimple.Direction.FORWARD);
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
 
         setupMotor(fr, false);
         setupMotor(br, false);

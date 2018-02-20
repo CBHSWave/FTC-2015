@@ -3,19 +3,20 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.HardwareBot;
+import org.firstinspires.ftc.teamcode.general.Call;
 
 import java.util.concurrent.TimeUnit;
 
 // Declare that the OpMode is Autonomous and is named AutoBot
 @Autonomous(name="AutoBot", group="Auto")
-public class AutoBot extends OpMode {
+public class AutoBot extends Auto {
 
     /* Declare OpMode members. */
 
     HardwareBot robot;
-    boolean done = false;
 
     @Override
     public void init(){
@@ -24,26 +25,9 @@ public class AutoBot extends OpMode {
     }
 
     @Override
-    public void loop() {
-        if (done) {
-            return;
-        }
-
-        robot.fl.setPower(-0.5);
-        robot.br.setPower(-0.5);
-        robot.fr.setPower(0.5);
-        robot.bl.setPower(0.5);
-
-        robot.period.reset();
-        while (robot.period.time(TimeUnit.MILLISECONDS) < 1000) {
-        }
-
-        robot.fl.setPower(0);
-        robot.br.setPower(0);
-        robot.fr.setPower(0);
-        robot.bl.setPower(0);
-        robot.period.reset();
-        done = true;
+    public void main() {
+        DcMotor[] motors = new DcMotor[]{robot.fl, robot.br, robot.fr, robot.bl};
+        AutoUtil.beforeAfter(AutoUtil.setMotorsCall(0.5, motors), AutoUtil.setMotorsCall(0, motors), robot.period, 1000);
     }
 }
 

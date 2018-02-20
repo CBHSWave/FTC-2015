@@ -96,10 +96,10 @@ public class ManualUtil {
 
         // Assign the values for the different powers
         // You can find these values online (check the FTC subreddit)
-        double flPow = -pad.left_stick_y - pad.left_stick_x;
+        double flPow = pad.left_stick_y + pad.left_stick_x;
         double frPow = pad.left_stick_y - pad.left_stick_x;
         double blPow = pad.left_stick_y - pad.left_stick_x;
-        double brPow = -pad.left_stick_y - pad.left_stick_x;
+        double brPow = pad.left_stick_y + pad.left_stick_x;
 
         // Scale the values, half them, then set the power
         frontleft.setPower(scale(flPow) / 2);
