@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.HardwareBot;
-import org.firstinspires.ftc.teamcode.general.Call;
 
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +20,7 @@ public class AutoBot extends OpMode {
     @Override
     public void init() {
 
+    }
 
     @Override
     public void loop() {
