@@ -10,4 +10,20 @@ import org.firstinspires.ftc.teamcode.HardwareBot;
 public class OurBot extends OpMode {
     /* Declare OpMode members. */
     HardwareBot robot       = new HardwareBot(); // use the class created to define a Pushbot's hardware
+
+    @Override
+    public void init() {
+        robot.drive(hardwareMap);
+
+    }
+
+    @Override
+    public void loop()
+    {
+        if(robot.lm != null && robot.rm != null)
+        {
+            robot.lm.setPower(gamepad1.left_stick_y);
+            robot.rm.setPower(gamepad1.right_stick_y);
+        }
+    }
 }

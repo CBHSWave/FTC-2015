@@ -19,5 +19,34 @@ import java.util.Iterator;
  * For example, the mecanum wheels can be initialized by calling the mecanum() method
  */
 public class HardwareBot {
-}
+    public DcMotor rm;
 
+    public DcMotor lm;
+
+    public DcMotor setupMotor(DcMotor motor, boolean encoder)
+    {
+        motor.setPower(0);
+        if(encoder)
+        {
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+        else
+        {
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        return motor;
+    }
+
+    public void drive(HardwareMap map)
+    {
+        rm = map.dcMotor.get("rm");
+        lm = map.dcMotor.get("lm");
+
+        setupMotor(lm, false);
+        setupMotor(lm, false);
+    }
+
+
+
+}

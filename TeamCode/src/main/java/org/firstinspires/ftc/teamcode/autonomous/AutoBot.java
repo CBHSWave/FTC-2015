@@ -17,5 +17,14 @@ public class AutoBot extends OpMode {
     /* Declare OpMode members. */
 
     HardwareBot robot;
+
+    @Override
+    public void init() {
+
+
+    @Override
+    public void loop() {
+
+    }
 }
 
