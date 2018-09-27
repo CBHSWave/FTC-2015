@@ -41,6 +41,8 @@ public class HardwareBot {
 
     public Servo knock;
 
+    private final HardwareMap hardwareMap;
+    
 //    public AccelerationSensor accel;
 
     /* local OpMode members. */
@@ -48,7 +50,9 @@ public class HardwareBot {
 
 
     /* Constructor */
-    public HardwareBot(){}
+    public HardwareBot(HardwareMap hardwareMap){
+        this.hardwareMap = hardwareMap;
+    }
 
     public Servo setupServo(Servo servo) {
         servo.setPosition(0);
@@ -68,40 +72,40 @@ public class HardwareBot {
         return motor;
     }
 
-    public void lift(HardwareMap map) {
-        lift = map.dcMotor.get("lift");
+    public void lift() {
+        lift = hardwareMap.dcMotor.get("lift");
         setupMotor(lift, true);
     }
 
-    public void flippy(HardwareMap map) {
-        flippy = map.dcMotor.get("flippy");
+    public void flippy() {
+        flippy = hardwareMap.dcMotor.get("flippy");
         setupMotor(flippy, true);
     }
 
-    public void lead(HardwareMap map) {
-        lead = map.dcMotor.get("lift");
+    public void lead() {
+        lead = hardwareMap.dcMotor.get("lift");
         setupMotor(lead, true);
     }
 
-    public void grabber(HardwareMap map) {
-        grabber = map.dcMotor.get("grabber");
+    public void grabber() {
+        grabber = hardwareMap.dcMotor.get("grabber");
         setupMotor(grabber, true);
     }
 
-    public void intake(HardwareMap map) {
-        leftIn = map.dcMotor.get("leftIn");
+    public void intake() {
+        leftIn = hardwareMap.dcMotor.get("leftIn");
         leftIn.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightIn = map.dcMotor.get("rightIn");
+        rightIn = hardwareMap.dcMotor.get("rightIn");
 
         setupMotor(leftIn, true);
         setupMotor(rightIn, true);
     }
 
-    public void mecanum(HardwareMap map) {
-        fr = map.dcMotor.get("fr");
-        fl = map.dcMotor.get("fl");
-        br = map.dcMotor.get("br");
-        bl = map.dcMotor.get("bl");
+    public void mecanum() {
+        fr = hardwareMap.dcMotor.get("fr");
+        fl = hardwareMap.dcMotor.get("fl");
+        br = hardwareMap.dcMotor.get("br");
+        bl = hardwareMap.dcMotor.get("bl");
 
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -112,10 +116,10 @@ public class HardwareBot {
         setupMotor(bl, false);
     }
 
-    public void normalDrive(HardwareMap map) {
+    public void normalDrive() {
         // Define and Initialize Motors
-        leftMotor   = map.dcMotor.get("left");
-        rightMotor  = map.dcMotor.get("right");
+        leftMotor   = hardwareMap.dcMotor.get("left");
+        rightMotor  = hardwareMap.dcMotor.get("right");
         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
@@ -123,16 +127,16 @@ public class HardwareBot {
         setupMotor(rightMotor, true);
     }
 
-    public void knock(HardwareMap map) {
-        knock = map.servo.get("knock");
+    public void knock() {
+        knock = hardwareMap.servo.get("knock");
 
         setupServo(knock);
     }
 
-    public void motorTelemetry(Telemetry telemetry, HardwareMap map) {
-        for (DcMotor motor : map.dcMotor) {
+    public void motorTelemetry(Telemetry telemetry) {
+        for (DcMotor motor : hardwareMap.dcMotor) {
             if (motor != null) {
-                Iterator<String> iterator = map.getNamesOf(motor).iterator();
+                Iterator<String> iterator = hardwareMap.getNamesOf(motor).iterator();
                 if (iterator.hasNext()) {
                     telemetry.addData(iterator.next(), motor.getPower());
                 }
@@ -140,10 +144,10 @@ public class HardwareBot {
         }
     }
 
-    public void servoTelemetry(Telemetry telemetry, HardwareMap map) {
-        for (Servo servo : map.servo) {
+    public void servoTelemetry(Telemetry telemetry) {
+        for (Servo servo : hardwareMap.servo) {
             if (servo != null) {
-                Iterator<String> iterator = map.getNamesOf(servo).iterator();
+                Iterator<String> iterator = hardwareMap.getNamesOf(servo).iterator();
                 if (iterator.hasNext()) {
                     telemetry.addData(iterator.next(), servo.getPosition());
                 }
@@ -151,9 +155,9 @@ public class HardwareBot {
         }
     }
 
-    public void allTelemetry(Telemetry telemetry, HardwareMap map) {
-        motorTelemetry(telemetry, map);
-        servoTelemetry(telemetry, map);
+    public void allTelemetry(Telemetry telemetry) {
+        motorTelemetry(telemetry);
+        servoTelemetry(telemetry);
     }
 
     /***

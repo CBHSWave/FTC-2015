@@ -9,5 +9,5 @@ import org.firstinspires.ftc.teamcode.HardwareBot;
  */
 
 public abstract class Auto extends LinearOpMode {
-    protected HardwareBot robot = new HardwareBot();
+    protected HardwareBot robot = new HardwareBot(hardwareMap);
 }

@@ -16,8 +16,7 @@ public class Diamond extends Auto {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new HardwareBot();   // Use our hardware
-        robot.mecanum(hardwareMap);
+        robot.mecanum();
 
         waitForStart();
 

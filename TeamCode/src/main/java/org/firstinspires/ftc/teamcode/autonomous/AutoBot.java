@@ -17,9 +17,8 @@ public class AutoBot extends Auto {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        HardwareBot robot = new HardwareBot();
-        robot.mecanum(hardwareMap);
-        robot.knock(hardwareMap);
+        robot.mecanum();
+        robot.knock();
 
         waitForStart();
 
