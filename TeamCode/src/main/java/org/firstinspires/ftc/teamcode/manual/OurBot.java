@@ -23,9 +23,10 @@ public class OurBot extends OpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.mecanum(hardwareMap);
-        robot.intake(hardwareMap);
-        robot.lift(hardwareMap);
-        robot.flippy(hardwareMap);
+        robot.knock(hardwareMap);
+//        robot.intake(hardwareMap);
+//        robot.lift(hardwareMap);
+//        robot.flippy(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -80,6 +81,16 @@ public class OurBot extends OpMode {
                 robot.flippy.setPower(-0.1);
             } else {
                 robot.flippy.setPower(0);
+            }
+        }
+
+        if (robot.knock != null) {
+            if (gamepad1.a) {
+                robot.knock.setPosition(0.55);
+            } else if (gamepad1.b) {
+                robot.knock.setPosition(0.45);
+            } else {
+                robot.knock.setPosition(0.5);
             }
         }
 

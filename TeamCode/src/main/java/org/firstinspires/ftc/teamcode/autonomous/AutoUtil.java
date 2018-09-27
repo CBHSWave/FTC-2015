@@ -57,11 +57,31 @@ public class AutoUtil {
         return new Call() {
             @Override
             public void run() {
-                for (DcMotor motor : motors) {
-                    motor.setPower(pow);
-                }
+                setMotors(pow, motors);
             }
         };
+    }
+
+    static Call setMotorsCall (final double[] pows, final DcMotor[] motors) {
+        return new Call() {
+
+            @Override
+            public void run() {
+                setMotors(pows, motors);
+            }
+        };
+    }
+
+    public static void setMotors (final double[] pows, DcMotor[] motors) {
+        for (int i = 0; i < motors.length; i++) {
+            motors[i].setPower(pows[i]);
+        }
+    }
+
+    public static void setMotors (double pow, DcMotor[] motors) {
+        for (DcMotor motor : motors) {
+            motor.setPower(pow);
+        }
     }
 
     // This method goes forward for a specified distance in cm on the specified motors

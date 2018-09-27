@@ -39,6 +39,8 @@ public class HardwareBot {
     public DcMotor leftIn;
     public DcMotor rightIn;
 
+    public Servo knock;
+
 //    public AccelerationSensor accel;
 
     /* local OpMode members. */
@@ -102,7 +104,7 @@ public class HardwareBot {
         bl = map.dcMotor.get("bl");
 
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        br.setDirection(DcMotorSimple.Direction.REVERSE);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
 
         setupMotor(fr, false);
         setupMotor(br, false);
@@ -119,6 +121,12 @@ public class HardwareBot {
 
         setupMotor(leftMotor, true);
         setupMotor(rightMotor, true);
+    }
+
+    public void knock(HardwareMap map) {
+        knock = map.servo.get("knock");
+
+        setupServo(knock);
     }
 
     public void motorTelemetry(Telemetry telemetry, HardwareMap map) {

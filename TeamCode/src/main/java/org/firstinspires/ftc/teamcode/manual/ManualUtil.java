@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.HardwareBot;
+import org.firstinspires.ftc.teamcode.general.GeneralUtil;
 
 /**
  * This class should handle common Manual OpMode utilities
@@ -93,26 +94,25 @@ public class ManualUtil {
     public static void mecanumDrive(Gamepad pad, double threshold,
                                     DcMotor frontleft, DcMotor frontright,
                                     DcMotor backleft, DcMotor backright) {
-
-        // Assign the values for the different powers
-        // You can find these values online (check the FTC subreddit)
-        double flPow = pad.left_stick_y + pad.left_stick_x;
-        double frPow = pad.left_stick_y - pad.left_stick_x;
-        double blPow = pad.left_stick_y - pad.left_stick_x;
-        double brPow = pad.left_stick_y + pad.left_stick_x;
+        // {flPow, frPow, blPow, brPow}
+        double[] powers = GeneralUtil.cartesianMecanum(pad.left_stick_x, pad.left_stick_y);
+//        double flPow = pad.left_stick_y - pad.left_stick_x;
+//        double frPow = pad.left_stick_y + pad.left_stick_x;
+//        double blPow = pad.left_stick_y + pad.left_stick_x;
+//        double brPow = pad.left_stick_y - pad.left_stick_x;
 
         // Scale the values, half them, then set the power
-        frontleft.setPower(scale(flPow) / 2);
-        frontright.setPower(scale(frPow) / 2);
-        backleft.setPower(scale(blPow) / 2);
-        backright.setPower(scale(brPow) / 2);
+        frontleft.setPower(scale(powers[0]));
+        frontright.setPower(scale(powers[1]));
+        backleft.setPower(scale(powers[2]));
+        backright.setPower(scale(powers[3]));
 
         // Check if we've hit the threshold then rotate
         if (pad.right_stick_x > threshold || pad.right_stick_x < -threshold) {
-            frontleft.setPower(pad.right_stick_x);
+            frontleft.setPower(-pad.right_stick_x);
             frontright.setPower(pad.right_stick_x);
             backleft.setPower(-pad.right_stick_x);
-            backright.setPower(-pad.right_stick_x);
+            backright.setPower(pad.right_stick_x);
         }
     }
 
