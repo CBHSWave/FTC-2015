@@ -16,16 +16,13 @@ import java.util.concurrent.TimeUnit;
 public class AutoBot extends Auto {
 
     @Override
-    public void runOpMode() throws InterruptedException {
-        robot.mecanum();
-        robot.knock();
+    public void prep() throws InterruptedException {
 
-        waitForStart();
+    }
 
-        robot.knock.setPosition(0);
-        sleep(500);
-        robot.knock.setPosition(0.5);
-        sleep(500);
+    @Override
+    public void run() throws InterruptedException {
+
     }
 }
 

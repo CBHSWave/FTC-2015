@@ -13,6 +13,10 @@ import org.firstinspires.ftc.teamcode.general.GeneralUtil;
 
 public class ManualUtil {
 
+    public static double pythag(double a, double b) {
+        return Math.sqrt(a * a + b * b);
+    }
+
     /**
      * Method for scaling inputs to the motors from the gamepad to allow for more natural controls
      * Given by FTC

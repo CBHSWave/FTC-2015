@@ -54,16 +54,6 @@ public class OurBot extends OpMode {
     public void loop() {
         ManualUtil.drive(robot, gamepad1);
 
-        if (robot.lift != null) {
-            if (gamepad1.b) {
-                robot.lift.setPower(0.25);
-            } else if (gamepad1.a){
-                robot.lift.setPower(-0.25);
-            } else {
-                robot.lift.setPower(0);
-            }
-        }
-
         if (robot.leftIn != null && robot.rightIn != null) {
             if (gamepad1.right_bumper || gamepad1.left_bumper) {
                 robot.rightIn.setPower(-gamepad1.right_trigger);
@@ -74,15 +64,6 @@ public class OurBot extends OpMode {
             }
         }
 
-        if (robot.flippy != null) {
-            if (gamepad1.y) {
-                robot.flippy.setPower(0.2);
-            } else if (gamepad1.x) {
-                robot.flippy.setPower(-0.1);
-            } else {
-                robot.flippy.setPower(0);
-            }
-        }
 
         if (robot.knock != null) {
             if (gamepad1.a) {

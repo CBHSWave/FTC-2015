@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -10,4 +11,19 @@ import org.firstinspires.ftc.teamcode.HardwareBot;
 
 public abstract class Auto extends LinearOpMode {
     protected HardwareBot robot = new HardwareBot(hardwareMap);
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        prep();
+        AutoUtil.resetAll(robot);
+        waitForStart();
+
+        run();
+
+        AutoUtil.resetAll(robot);
+    }
+
+    public abstract void prep() throws InterruptedException;
+
+    public abstract void run() throws InterruptedException;
 }

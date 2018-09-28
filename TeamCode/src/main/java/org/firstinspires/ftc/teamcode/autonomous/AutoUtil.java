@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.HardwareBot;
 import org.firstinspires.ftc.teamcode.general.Call;
 
 import java.util.HashMap;
@@ -53,7 +55,7 @@ public class AutoUtil {
         after.run();
     }
 
-    static Call setMotorsCall(final double pow, final DcMotor[] motors) {
+    public static Call setMotorsCall(final double pow, final DcMotor[] motors) {
         return new Call() {
             @Override
             public void run() {
@@ -62,7 +64,7 @@ public class AutoUtil {
         };
     }
 
-    static Call setMotorsCall (final double[] pows, final DcMotor[] motors) {
+    public static Call setMotorsCall (final double[] pows, final DcMotor[] motors) {
         return new Call() {
 
             @Override
@@ -81,6 +83,21 @@ public class AutoUtil {
     public static void setMotors (double pow, DcMotor[] motors) {
         for (DcMotor motor : motors) {
             motor.setPower(pow);
+        }
+    }
+
+    public static void stopMotors(DcMotor[] motors) {
+        setMotors(0, motors);
+    }
+
+    public static void resetAll(HardwareBot robot) {
+        for (DcMotor motor : robot.motors) {
+            motor.setPower(0);
+            motor.resetDeviceConfigurationForOpMode();
+        }
+
+        for (Servo servo : robot.servos) {
+            servo.setPosition(0);
         }
     }
 

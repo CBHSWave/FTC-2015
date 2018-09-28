@@ -15,11 +15,12 @@ import org.firstinspires.ftc.teamcode.general.GeneralUtil;
 public class Diamond extends Auto {
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void prep() throws InterruptedException {
         robot.mecanum();
+    }
 
-        waitForStart();
-
+    @Override
+    public void run() throws InterruptedException {
         DcMotor[] motors = new DcMotor[]{robot.fl, robot.fr, robot.bl, robot.br};
         double[] northeast = GeneralUtil.polarMecanum(45, 1);
         double[] southeast = GeneralUtil.polarMecanum(-45, 1);
@@ -28,12 +29,28 @@ public class Diamond extends Auto {
 
         AutoUtil.setMotors(northeast, motors);
         sleep(1000);
+
+        AutoUtil.stopMotors(motors);
+        sleep(100);
+
         AutoUtil.setMotors(southeast, motors);
         sleep(1000);
+
+        AutoUtil.stopMotors(motors);
+        sleep(100);
+
         AutoUtil.setMotors(southwest, motors);
         sleep(1000);
+
+        AutoUtil.stopMotors(motors);
+        sleep(100);
+
         AutoUtil.setMotors(northwest, motors);
         sleep(1000);
-        AutoUtil.setMotors(0, motors);
+
+
+        // Final Stopping, called on everything
+        AutoUtil.stopMotors((DcMotor[]) robot.motors.toArray());
+
     }
 }

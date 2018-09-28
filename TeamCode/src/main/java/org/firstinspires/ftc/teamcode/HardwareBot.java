@@ -19,7 +19,9 @@ import java.util.Iterator;
  * For example, the mecanum wheels can be initialized by calling the mecanum() method
  */
 public class HardwareBot {
-    /* PublicOpMode members. */
+    // Main Robot Functionality
+
+    /* Classic drive motors */
     public DcMotor  leftMotor;
     public DcMotor  rightMotor;
 
@@ -29,17 +31,20 @@ public class HardwareBot {
     public DcMotor br;
     public DcMotor bl;
 
-    public DcMotor lift;
-    public DcMotor lead;
-    public DcMotor grabber;
-    public DcMotor flippy;
-
-    public ArrayList<DcMotor> motors = new ArrayList<>();
-    private ArrayList<Servo> servos = new ArrayList<>();
+    // Intake motors
     public DcMotor leftIn;
     public DcMotor rightIn;
 
     public Servo knock;
+
+    // Transmission functionality
+    public Servo transGear;
+    public DcMotor transDrive;
+    public Servo transTurn;
+
+    // Some nice arrays
+    public ArrayList<DcMotor> motors = new ArrayList<>();
+    public ArrayList<Servo> servos = new ArrayList<>();
 
     private final HardwareMap hardwareMap;
     
@@ -72,26 +77,6 @@ public class HardwareBot {
         return motor;
     }
 
-    public void lift() {
-        lift = hardwareMap.dcMotor.get("lift");
-        setupMotor(lift, true);
-    }
-
-    public void flippy() {
-        flippy = hardwareMap.dcMotor.get("flippy");
-        setupMotor(flippy, true);
-    }
-
-    public void lead() {
-        lead = hardwareMap.dcMotor.get("lift");
-        setupMotor(lead, true);
-    }
-
-    public void grabber() {
-        grabber = hardwareMap.dcMotor.get("grabber");
-        setupMotor(grabber, true);
-    }
-
     public void intake() {
         leftIn = hardwareMap.dcMotor.get("leftIn");
         leftIn.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -114,6 +99,27 @@ public class HardwareBot {
         setupMotor(br, false);
         setupMotor(fl, false);
         setupMotor(bl, false);
+    }
+
+    public void transGear() {
+        transGear = hardwareMap.servo.get("transGear");
+        setupServo(transGear);
+    }
+
+    public void transDrive() {
+        transDrive = hardwareMap.dcMotor.get("transDrive");
+        setupMotor(transDrive, false);
+    }
+
+    public void transTurn() {
+        transTurn = hardwareMap.servo.get("transTurn");
+        setupServo(transTurn);
+    }
+
+    public void transmission() {
+        transTurn();
+        transGear();
+        transDrive();
     }
 
     public void normalDrive() {
