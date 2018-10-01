@@ -2,14 +2,17 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * This is NOT an opmode.
@@ -22,32 +25,36 @@ public class HardwareBot {
     // Main Robot Functionality
 
     /* Classic drive motors */
-    public DcMotor  leftMotor;
-    public DcMotor  rightMotor;
+    public Optional<DcMotor>  leftMotor;
+    public Optional<DcMotor>  rightMotor;
 
     // Motors (fr = front right)
-    public DcMotor fr;
-    public DcMotor fl;
-    public DcMotor br;
-    public DcMotor bl;
+    public Optional<DcMotor> fr = Optional.empty();
+    public Optional<DcMotor> fl;
+    public Optional<DcMotor> br;
+    public Optional<DcMotor> bl;
 
     // Intake motors
-    public DcMotor leftIn;
-    public DcMotor rightIn;
+    public Optional<DcMotor> leftIn;
+    public Optional<DcMotor> rightIn;
 
-    public Servo knock;
+    public Optional<Servo> knock;
 
     // Transmission functionality
-    public Servo transGear;
-    public DcMotor transDrive;
-    public Servo transTurn;
+    public Optional<Servo> transGear;
+    public Optional<DcMotor> transDrive;
+    public Optional<Servo> transTurn;
 
     // Some nice arrays
     public ArrayList<DcMotor> motors = new ArrayList<>();
     public ArrayList<Servo> servos = new ArrayList<>();
 
     private final HardwareMap hardwareMap;
-    
+
+    private Consumer<DcMotor> encoderConsumer = m -> setupMotor(m, true);
+    private Consumer<DcMotor> noEncoderConsumer = m -> setupMotor(m, false);
+    private Consumer<DcMotor> reverseConsumer = m -> m.setDirection(DcMotorSimple.Direction.REVERSE);
+
 //    public AccelerationSensor accel;
 
     /* local OpMode members. */
@@ -59,13 +66,13 @@ public class HardwareBot {
         this.hardwareMap = hardwareMap;
     }
 
-    public Servo setupServo(Servo servo) {
+    public Optional<Servo> setupServo(Servo servo) {
         servo.setPosition(0);
         servos.add(servo);
-        return servo;
+        return Optional.of(servo);
     }
 
-    public DcMotor setupMotor(DcMotor motor, boolean encoder) {
+    public Optional<DcMotor> setupMotor(DcMotor motor, boolean encoder) {
         motor.setPower(0);
         if (encoder) {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -74,46 +81,47 @@ public class HardwareBot {
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
         motors.add(motor);
-        return motor;
+        return Optional.of(motor);
     }
 
     public void intake() {
-        leftIn = hardwareMap.dcMotor.get("leftIn");
-        leftIn.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightIn = hardwareMap.dcMotor.get("rightIn");
+        leftIn = Optional.of(hardwareMap.dcMotor.get("leftIn"));
+        leftIn.ifPresent(m -> m.setDirection(DcMotorSimple.Direction.REVERSE));
+        rightIn = Optional.of(hardwareMap.dcMotor.get("rightIn"));
 
-        setupMotor(leftIn, true);
-        setupMotor(rightIn, true);
+
+        leftIn.ifPresent(encoderConsumer);
+        rightIn.ifPresent(encoderConsumer);
     }
 
     public void mecanum() {
-        fr = hardwareMap.dcMotor.get("fr");
-        fl = hardwareMap.dcMotor.get("fl");
-        br = hardwareMap.dcMotor.get("br");
-        bl = hardwareMap.dcMotor.get("bl");
+        fr = Optional.of(hardwareMap.dcMotor.get("fr"));
+        fl = Optional.of(hardwareMap.dcMotor.get("fl"));
+        br = Optional.of(hardwareMap.dcMotor.get("br"));
+        bl = Optional.of(hardwareMap.dcMotor.get("bl"));
 
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fl.ifPresent(reverseConsumer);
+        bl.ifPresent(reverseConsumer);
 
-        setupMotor(fr, false);
-        setupMotor(br, false);
-        setupMotor(fl, false);
-        setupMotor(bl, false);
+        fr.ifPresent(noEncoderConsumer);
+        br.ifPresent(noEncoderConsumer);
+        fl.ifPresent(noEncoderConsumer);
+        bl.ifPresent(noEncoderConsumer);
     }
 
     public void transGear() {
-        transGear = hardwareMap.servo.get("transGear");
-        setupServo(transGear);
+        transGear = Optional.of(hardwareMap.servo.get("transGear"));
+        transGear.ifPresent(this::setupServo);
     }
 
     public void transDrive() {
-        transDrive = hardwareMap.dcMotor.get("transDrive");
-        setupMotor(transDrive, false);
+        transDrive = Optional.of(hardwareMap.dcMotor.get("transDrive"));
+        transDrive.ifPresent(noEncoderConsumer);
     }
 
     public void transTurn() {
-        transTurn = hardwareMap.servo.get("transTurn");
-        setupServo(transTurn);
+        transTurn = Optional.of(hardwareMap.servo.get("transTurn"));
+        transTurn.ifPresent(this::setupServo);
     }
 
     public void transmission() {
@@ -124,19 +132,19 @@ public class HardwareBot {
 
     public void normalDrive() {
         // Define and Initialize Motors
-        leftMotor   = hardwareMap.dcMotor.get("left");
-        rightMotor  = hardwareMap.dcMotor.get("right");
-        leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        leftMotor   = Optional.of(hardwareMap.dcMotor.get("left"));
+        rightMotor  = Optional.of(hardwareMap.dcMotor.get("right"));
+//        leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        rightMotor.ifPresent(reverseConsumer) ;// Set to FORWARD if using AndyMark motors
 
-        setupMotor(leftMotor, true);
-        setupMotor(rightMotor, true);
+        leftMotor.ifPresent(encoderConsumer);
+        rightMotor.ifPresent(encoderConsumer);
     }
 
     public void knock() {
-        knock = hardwareMap.servo.get("knock");
+        knock = Optional.of(hardwareMap.servo.get("knock"));
 
-        setupServo(knock);
+        knock.ifPresent(this::setupServo);
     }
 
     public void motorTelemetry(Telemetry telemetry) {

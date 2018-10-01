@@ -18,19 +18,19 @@ public class Transmission extends OpMode {
 
     @Override
     public void loop() {
-        if (robot.transGear != null) {
+        robot.transGear.ifPresent(transGear -> {
             if (gamepad1.a) {
-                robot.transGear.setPosition(0.55);
+                transGear.setPosition(0.55);
             } else if (gamepad1.b) {
-                robot.transGear.setPosition(0.45);
+                transGear.setPosition(0.45);
             } else {
-                robot.transGear.setPosition(0.5);
+                transGear.setPosition(0.5);
             }
-        }
+        });
 
-        if (robot.transDrive != null) {
+        robot.transDrive.ifPresent(transDrive -> {
             double magStick = ManualUtil.pythag(gamepad1.left_stick_x, gamepad1.left_stick_y);
-            robot.transDrive.setPower(ManualUtil.scale(magStick));
-        }
+            transDrive.setPower(ManualUtil.scale(magStick));
+        });
     }
 }

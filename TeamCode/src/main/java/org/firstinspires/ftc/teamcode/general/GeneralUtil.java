@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.general;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 /**
  * Created by wjackson on 9/18/2018.
  */
@@ -24,5 +27,10 @@ public class GeneralUtil {
         double blPow = y + x;
         double brPow = y - x;
         return new double[]{flPow, frPow, blPow, brPow};
+    }
+
+    @SafeVarargs
+    public static <T> T[] optArray(Optional<T>... opts) {
+        return (T[]) Stream.of(opts).filter(Optional::isPresent).map(o -> o.get()).toArray();
     }
 }

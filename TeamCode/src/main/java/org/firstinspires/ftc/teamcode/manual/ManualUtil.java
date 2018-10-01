@@ -128,17 +128,17 @@ public class ManualUtil {
      */
     public static void drive(HardwareBot robot, Gamepad pad) {
         // Null check
-        if (robot.fl != null && robot.fr != null && robot.bl != null && robot.br != null) {
+        if (robot.fr.isPresent() && robot.fl.isPresent() && robot.bl.isPresent() && robot.br.isPresent()) {
             // Call into the mecanum drive code with a 0.1 threshold
             mecanumDrive(pad, 0.1,
-                    robot.fl, robot.fr,
-                    robot.bl, robot.br);
+                    robot.fl.get(), robot.fr.get(),
+                    robot.bl.get(), robot.br.get());
         }
 
         // Null check
-        if (robot.leftMotor != null && robot.rightMotor != null) {
+        if (robot.leftMotor.isPresent() && robot.rightMotor.isPresent()) {
             // Call into the tank drive code
-            normalDrive(pad, robot.leftMotor, robot.rightMotor);
+            normalDrive(pad, robot.leftMotor.get(), robot.rightMotor.get());
         }
     }
 

@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.HardwareBot;
 import org.firstinspires.ftc.teamcode.general.GeneralUtil;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 /**
  * Created by wjackson on 9/18/2018.
  */
@@ -21,7 +24,8 @@ public class Diamond extends Auto {
 
     @Override
     public void run() throws InterruptedException {
-        DcMotor[] motors = new DcMotor[]{robot.fl, robot.fr, robot.bl, robot.br};
+        DcMotor[] motors = GeneralUtil.optArray(robot.fl, robot.fr, robot.bl, robot.br);
+
         double[] northeast = GeneralUtil.polarMecanum(45, 1);
         double[] southeast = GeneralUtil.polarMecanum(-45, 1);
         double[] southwest = GeneralUtil.polarMecanum(180 + 45, 1);
@@ -51,6 +55,5 @@ public class Diamond extends Auto {
 
         // Final Stopping, called on everything
         AutoUtil.stopMotors((DcMotor[]) robot.motors.toArray());
-
     }
 }

@@ -54,26 +54,25 @@ public class OurBot extends OpMode {
     public void loop() {
         ManualUtil.drive(robot, gamepad1);
 
-        if (robot.leftIn != null && robot.rightIn != null) {
+        robot.leftIn.ifPresent(leftIn -> robot.rightIn.ifPresent(rightIn -> {
             if (gamepad1.right_bumper || gamepad1.left_bumper) {
-                robot.rightIn.setPower(-gamepad1.right_trigger);
-                robot.leftIn.setPower(-gamepad1.left_trigger);
+                rightIn.setPower(-gamepad1.right_trigger);
+                leftIn.setPower(-gamepad1.left_trigger);
             } else {
-                robot.rightIn.setPower(gamepad1.right_trigger);
-                robot.leftIn.setPower(gamepad1.left_trigger);
+                rightIn.setPower(gamepad1.right_trigger);
+                leftIn.setPower(gamepad1.left_trigger);
             }
-        }
+        }));
 
-
-        if (robot.knock != null) {
+        robot.knock.ifPresent(knock -> {
             if (gamepad1.a) {
-                robot.knock.setPosition(0.55);
+                knock.setPosition(0.55);
             } else if (gamepad1.b) {
-                robot.knock.setPosition(0.45);
+                knock.setPosition(0.45);
             } else {
-                robot.knock.setPosition(0.5);
+                knock.setPosition(0.5);
             }
-        }
+        });
 
         robot.allTelemetry(telemetry);
         telemetry.update();
