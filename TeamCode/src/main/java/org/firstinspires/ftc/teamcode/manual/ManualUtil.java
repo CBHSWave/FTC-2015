@@ -19,6 +19,7 @@ public class ManualUtil {
 
     /**
      * Method for scaling inputs to the motors from the gamepad to allow for more natural controls
+     * Gradient for more natural controls on joysticks and other double-valued gamepad inputs
      * Given by FTC
      * @param value value to scale
      * @return the scaled value
