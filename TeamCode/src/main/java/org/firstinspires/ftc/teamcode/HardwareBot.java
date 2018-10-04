@@ -93,7 +93,7 @@ public class HardwareBot {
         leftIn.ifPresent(encoderConsumer);
         rightIn.ifPresent(encoderConsumer);
     }
-
+    // defines motors
     public void mecanum() {
         fr = Optional.of(hardwareMap.dcMotor.get("fr"));
         fl = Optional.of(hardwareMap.dcMotor.get("fl"));
