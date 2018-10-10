@@ -16,34 +16,35 @@ import java.util.Optional;
 
 /**
  * This is NOT an opmode.
- *
+ * hello
  * This class can be used to define all the specific hardware for our robot
  * Each different section of the design requires a method for initialization
  * For example, the mecanum wheels can be initialized by calling the mecanum() method
  */
 public class HardwareBot {
     // Main Robot Functionality
+    // Optional Values are either empty or filled with the value of the type in <>
 
     /* Classic drive motors */
-    public Optional<DcMotor>  leftMotor;
-    public Optional<DcMotor>  rightMotor;
+    public Optional<DcMotor>  leftMotor = Optional.empty();
+    public Optional<DcMotor>  rightMotor = Optional.empty();
 
     // Motors (fr = front right)
     public Optional<DcMotor> fr = Optional.empty();
-    public Optional<DcMotor> fl;
-    public Optional<DcMotor> br;
-    public Optional<DcMotor> bl;
+    public Optional<DcMotor> fl = Optional.empty();
+    public Optional<DcMotor> br = Optional.empty();
+    public Optional<DcMotor> bl = Optional.empty();
 
     // Intake motors
-    public Optional<DcMotor> leftIn;
-    public Optional<DcMotor> rightIn;
+    public Optional<DcMotor> leftIn = Optional.empty();
+    public Optional<DcMotor> rightIn = Optional.empty();
 
-    public Optional<Servo> knock;
+    public Optional<Servo> knock = Optional.empty();
 
     // Transmission functionality
-    public Optional<Servo> transGear;
-    public Optional<DcMotor> transDrive;
-    public Optional<Servo> transTurn;
+    public Optional<Servo> transGear = Optional.empty();
+    public Optional<DcMotor> transDrive = Optional.empty();
+    public Optional<Servo> transTurn = Optional.empty();
 
     // Some nice arrays
     public ArrayList<DcMotor> motors = new ArrayList<>();
@@ -93,7 +94,7 @@ public class HardwareBot {
         leftIn.ifPresent(encoderConsumer);
         rightIn.ifPresent(encoderConsumer);
     }
-
+    // defines motors
     public void mecanum() {
         fr = Optional.of(hardwareMap.dcMotor.get("fr"));
         fl = Optional.of(hardwareMap.dcMotor.get("fl"));
