@@ -24,6 +24,7 @@ public class OurBot extends OpMode {
          */
         robot.mecanum();
         robot.knock();
+        robot.winch();
 //        robot.intake();
 //        robot.lift();
 //        robot.flippy();
@@ -71,6 +72,16 @@ public class OurBot extends OpMode {
                 knock.setPosition(0.45);
             } else {
                 knock.setPosition(0.5);
+            }
+        });
+
+        robot.winch.ifPresent(winch -> {
+            if (gamepad1.dpad_up) {
+                winch.setPower(1);
+            } else if (gamepad1.dpad_down) {
+                winch.setPower(-0.2);
+            } else {
+                winch.setPower(0);
             }
         });
 

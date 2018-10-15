@@ -35,6 +35,9 @@ public class HardwareBot {
     public Optional<DcMotor> br = Optional.empty();
     public Optional<DcMotor> bl = Optional.empty();
 
+    // Winch
+    public Optional<DcMotor> winch = Optional.empty();
+
     // Intake motors
     public Optional<DcMotor> leftIn = Optional.empty();
     public Optional<DcMotor> rightIn = Optional.empty();
@@ -129,6 +132,11 @@ public class HardwareBot {
         transTurn();
         transGear();
         transDrive();
+    }
+
+    public void winch() {
+        winch = Optional.of(hardwareMap.dcMotor.get("winch"));
+        winch.ifPresent(noEncoderConsumer);
     }
 
     public void normalDrive() {
