@@ -73,7 +73,7 @@ public class HardwareBot {
     public Optional<Servo> setupServo(Servo servo) {
         servo.setPosition(0);
         servos.add(servo);
-        return Optional.of(servo);
+        return Optional.ofNullable(servo);
     }
 
     public Optional<DcMotor> setupMotor(DcMotor motor, boolean encoder) {
@@ -85,13 +85,13 @@ public class HardwareBot {
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
         motors.add(motor);
-        return Optional.of(motor);
+        return Optional.ofNullable(motor);
     }
 
     public void intake() {
-        leftIn = Optional.of(hardwareMap.dcMotor.get("leftIn"));
+        leftIn = Optional.ofNullable(hardwareMap.dcMotor.get("leftIn"));
         leftIn.ifPresent(m -> m.setDirection(DcMotorSimple.Direction.REVERSE));
-        rightIn = Optional.of(hardwareMap.dcMotor.get("rightIn"));
+        rightIn = Optional.ofNullable(hardwareMap.dcMotor.get("rightIn"));
 
 
         leftIn.ifPresent(encoderConsumer);
@@ -99,10 +99,10 @@ public class HardwareBot {
     }
     // defines motors
     public void mecanum() {
-        fr = Optional.of(hardwareMap.dcMotor.get("fr"));
-        fl = Optional.of(hardwareMap.dcMotor.get("fl"));
-        br = Optional.of(hardwareMap.dcMotor.get("br"));
-        bl = Optional.of(hardwareMap.dcMotor.get("bl"));
+        fr = Optional.ofNullable(hardwareMap.dcMotor.get("fr"));
+        fl = Optional.ofNullable(hardwareMap.dcMotor.get("fl"));
+        br = Optional.ofNullable(hardwareMap.dcMotor.get("br"));
+        bl = Optional.ofNullable(hardwareMap.dcMotor.get("bl"));
 
         fl.ifPresent(reverseConsumer);
         bl.ifPresent(reverseConsumer);
@@ -114,17 +114,17 @@ public class HardwareBot {
     }
 
     public void transGear() {
-        transGear = Optional.of(hardwareMap.servo.get("transGear"));
+        transGear = Optional.ofNullable(hardwareMap.servo.get("transGear"));
         transGear.ifPresent(this::setupServo);
     }
 
     public void transDrive() {
-        transDrive = Optional.of(hardwareMap.dcMotor.get("transDrive"));
+        transDrive = Optional.ofNullable(hardwareMap.dcMotor.get("transDrive"));
         transDrive.ifPresent(noEncoderConsumer);
     }
 
     public void transTurn() {
-        transTurn = Optional.of(hardwareMap.servo.get("transTurn"));
+        transTurn = Optional.ofNullable(hardwareMap.servo.get("transTurn"));
         transTurn.ifPresent(this::setupServo);
     }
 
@@ -135,14 +135,15 @@ public class HardwareBot {
     }
 
     public void winch() {
-        winch = Optional.of(hardwareMap.dcMotor.get("winch"));
+        winch = Optional.ofNullable(hardwareMap.dcMotor.get("winch"));
         winch.ifPresent(noEncoderConsumer);
+        winch.ifPresent(reverseConsumer);
     }
 
     public void normalDrive() {
         // Define and Initialize Motors
-        leftMotor   = Optional.of(hardwareMap.dcMotor.get("left"));
-        rightMotor  = Optional.of(hardwareMap.dcMotor.get("right"));
+        leftMotor   = Optional.ofNullable(hardwareMap.dcMotor.get("left"));
+        rightMotor  = Optional.ofNullable(hardwareMap.dcMotor.get("right"));
 //        leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightMotor.ifPresent(reverseConsumer) ;// Set to FORWARD if using AndyMark motors
 
@@ -151,7 +152,7 @@ public class HardwareBot {
     }
 
     public void knock() {
-        knock = Optional.of(hardwareMap.servo.get("knock"));
+        knock = Optional.ofNullable(hardwareMap.servo.get("knock"));
 
         knock.ifPresent(this::setupServo);
     }

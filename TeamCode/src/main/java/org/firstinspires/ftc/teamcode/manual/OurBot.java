@@ -11,7 +11,7 @@ public class OurBot extends OpMode {
 
     private static final float TEST_MOTOR_POW = 1;
     /* Declare OpMode members. */
-    HardwareBot robot       = new HardwareBot(hardwareMap); // use the class created to define a Pushbot's hardware
+    HardwareBot robot; // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class.
 
     /*
@@ -22,8 +22,9 @@ public class OurBot extends OpMode {
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
+        robot = new HardwareBot(hardwareMap);
         robot.mecanum();
-        robot.knock();
+//        robot.knock();
         robot.winch();
 //        robot.intake();
 //        robot.lift();
