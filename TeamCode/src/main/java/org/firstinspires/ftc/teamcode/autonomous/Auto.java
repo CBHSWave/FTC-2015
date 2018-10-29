@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.HardwareBot;
  */
 
 public abstract class Auto extends LinearOpMode {
-    protected HardwareBot robot = new HardwareBot(hardwareMap);
+    protected HardwareBot robot;
 
     @Override
     public void runOpMode() throws InterruptedException {

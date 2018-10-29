@@ -17,12 +17,39 @@ public class AutoBot extends Auto {
 
     @Override
     public void prep() throws InterruptedException {
+    robot = new HardwareBot(hardwareMap);
 
+    robot.mecanum();
+
+    robot.knock();
     }
 
     @Override
     public void run() throws InterruptedException {
+    DcMotor[] motors = GeneralUtil.optArray(robot.fl, robot.fr, robot.bl, robot.br);
 
+    double[] northeast = GeneralUtil.polarMecanum(45, 1);
+    double[] southeast = GeneralUtil.polarMecanum(-45, 1);
+    double[] southwest = GeneralUtil.polarMecanum(180 + 45, 1);
+    double[] northwest = GeneralUtil.polarMecanum(180 - 45, 1);
+    double[] north = GeneralUtil.polarMecanum(0, 1);
+    double[] south = GeneralUtil.polarMecanum(180, 1);
+    double[] east = GeneralUtil.polarMecanum(90, 1);
+    double[] west = GeneralUtil.polarMecanum(270, 1);
+
+
+    AutoUtil.setMotors(north, motors);
+    sleep(1000);
+
+    AutoUtil.stopMotors(motors);
+    sleep(100);
+
+    robot.knock.ifPresent(knock -> {
+        knock.setPosition(0.95);
+        sleep(500);
+        knock.setPosition(0);
+    });
     }
 }
 
+    
