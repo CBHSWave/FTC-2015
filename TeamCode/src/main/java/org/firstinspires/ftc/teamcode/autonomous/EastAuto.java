@@ -1,27 +1,20 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.HardwareBot;
-import org.firstinspires.ftc.teamcode.general.Call;
 import org.firstinspires.ftc.teamcode.general.GeneralUtil;
 
-import java.util.concurrent.TimeUnit;
-
 // Declare that the OpMode is Autonomous and is named AutoBot
-@Autonomous(name="AutoBot", group="Auto")
-public class AutoBot extends Auto {
+@Autonomous(name="EastAuto", group="Auto")
+public class EastAuto extends Auto {
 
     @Override
     public void prep() throws InterruptedException {
         robot = new HardwareBot(hardwareMap);
 
         robot.mecanum();
-
-        robot.winch();
 
         robot.knock();
     }
@@ -40,17 +33,28 @@ public class AutoBot extends Auto {
         double[] east = GeneralUtil.polarMecanum(90, 1);
         double[] west = GeneralUtil.polarMecanum(270, 1);
 
-        robot.winch.ifPresent(winch -> {
-            winch.setPower(-0.2);
-            sleep(100);
-            winch.setPower(0.2);
-            sleep(100);
-            winch.setPower(0);
+
+        AutoUtil.setMotors(east , motors);
+        sleep(1000);
+        AutoUtil.stopMotors(motors);
+        sleep(100);
+
+        AutoUtil.setMotors(north , motors);
+        sleep(1000);
+        AutoUtil.stopMotors(motors);
+        sleep(100);
+
+        robot.knock.ifPresent(knock -> {
+            knock.setPosition(1.0);
+            sleep(50);
+            knock.setPosition(0.0);
+
         });
 
-        AutoUtil.setMotors(east, motors);
-        sleep(100);
+        AutoUtil.setMotors(south , motors);
+        sleep(2000);
         AutoUtil.stopMotors(motors);
+
     }
 }
 

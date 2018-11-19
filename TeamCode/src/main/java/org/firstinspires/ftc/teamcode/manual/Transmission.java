@@ -38,4 +38,4 @@ public class Transmission extends OpMode {
             transDrive.setPosition(ManualUtil.scale(turnValue));
 
         });
-}
+    }
