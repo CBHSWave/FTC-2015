@@ -3,8 +3,11 @@ package org.firstinspires.ftc.teamcode.manual;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.HardwareBot;
+
+import static java.lang.Thread.sleep;
 
 @TeleOp(name="OurBot", group="Manual")
 public class OurBot extends OpMode {
@@ -13,6 +16,19 @@ public class OurBot extends OpMode {
     /* Declare OpMode members. */
     HardwareBot robot; // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class.
+
+    // 0.53 if you don't want whine
+    public static final double LOCKED = 0.5;
+    public static final double UNLOCKED = 0.65;
+
+    // Given in milliseconds
+    public static final long LOCK_DELAY = 150;
+
+    public static final double KNOCK_UP = 0;
+    public static final double KNOCK_DOWN = 0.8;
+
+    public static final double UP_SPEED = 1.0;
+    public static final double DOWN_SPEED = -0.5;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -24,8 +40,10 @@ public class OurBot extends OpMode {
          */
         robot = new HardwareBot(hardwareMap);
         robot.mecanum();
-//        robot.knock();
+        robot.knock();
         robot.winch();
+        robot.lock();
+        robot.lock.ifPresent(lock -> lock.setPosition(LOCKED));
 //        robot.intake();
 //        robot.lift();
 //        robot.flippy();
@@ -68,26 +86,48 @@ public class OurBot extends OpMode {
 
         robot.knock.ifPresent(knock -> {
             if (gamepad1.a) {
-                knock.setPosition(0.55);
+                knock.setPosition(KNOCK_DOWN);
             } else if (gamepad1.b) {
-                knock.setPosition(0.45);
+                knock.setPosition(KNOCK_UP);
             } else {
-                knock.setPosition(0.5);
+                knock.setPosition(KNOCK_DOWN);
             }
         });
 
-        robot.winch.ifPresent(winch -> {
+        robot.winch.ifPresent(winch -> robot.lock.ifPresent(lock -> {
             if (gamepad1.dpad_up) {
-                winch.setPower(1);
+                doLock(lock);
+
+                winch.setPower(UP_SPEED);
             } else if (gamepad1.dpad_down) {
-                winch.setPower(-0.2);
+                doLock(lock);
+                winch.setPower(DOWN_SPEED);
             } else {
                 winch.setPower(0);
+                if (gamepad1.right_bumper) {
+                    lock.setPosition(UNLOCKED);
+                } else {
+                    lock.setPosition(LOCKED);
+                }
             }
-        });
+        }));
 
         robot.allTelemetry(telemetry);
         telemetry.update();
+    }
+
+    private void doLock(Servo lock) {
+        try {
+            if (!gamepad1.right_bumper && !gamepad1.left_bumper) {
+                lock.setPosition(UNLOCKED);
+            } else if (gamepad1.left_bumper) {
+                lock.setPosition(LOCKED);
+            }
+            sleep(LOCK_DELAY);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            telemetry.addData("Lock Fail", e.getStackTrace());
+        }
     }
 
     /*
@@ -98,6 +138,7 @@ public class OurBot extends OpMode {
         for (DcMotor motor : robot.motors) {
             motor.setPower(0);
         }
+        robot.lock.ifPresent(lock -> lock.setPosition(LOCKED));
     }
 
 }

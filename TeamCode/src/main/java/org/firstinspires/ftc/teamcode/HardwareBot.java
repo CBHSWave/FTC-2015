@@ -43,6 +43,8 @@ public class HardwareBot {
     public Optional<DcMotor> rightIn = Optional.empty();
 
     public Optional<Servo> knock = Optional.empty();
+    public Optional<Servo> lock = Optional.empty();
+
 
     // Transmission functionality
     public Optional<Servo> transGear = Optional.empty();
@@ -137,8 +139,7 @@ public class HardwareBot {
     public void winch() {
         winch = Optional.ofNullable(hardwareMap.dcMotor.get("winch"));
         winch.ifPresent(noEncoderConsumer);
-        winch.ifPresent(reverseConsumer);
-    }
+   }
 
     public void normalDrive() {
         // Define and Initialize Motors
@@ -155,6 +156,12 @@ public class HardwareBot {
         knock = Optional.ofNullable(hardwareMap.servo.get("knock"));
 
         knock.ifPresent(this::setupServo);
+    }
+
+    public void lock() {
+        lock = Optional.ofNullable(hardwareMap.servo.get("lock"));
+
+        lock.ifPresent(this::setupServo);
     }
 
     public void motorTelemetry(Telemetry telemetry) {
