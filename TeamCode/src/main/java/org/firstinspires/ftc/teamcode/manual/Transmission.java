@@ -29,13 +29,14 @@ public class Transmission extends OpMode {
         });
 
         robot.transDrive.ifPresent(transDrive -> {
-            double magStick = ManualUtil.pythag( gamepad1.right_stick_x, gamepad1.right_stick_y);
+            double magStick = ManualUtil.pythag(gamepad1.right_stick_x, gamepad1.right_stick_y);
             transDrive.setPower(ManualUtil.scale(magStick));
         });
 
-        robot.transTurn.ifPresent(transDrive-> {
-            double turnValue = (gamepad1.left_stick_x + 1)/2;
+        robot.transTurn.ifPresent(transDrive -> {
+            double turnValue = (gamepad1.left_stick_x + 1) / 2;
             transDrive.setPosition(ManualUtil.scale(turnValue));
 
         });
     }
+}

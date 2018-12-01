@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
@@ -40,9 +39,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-
-
 
 /*
  * This is an example LinearOpMode that shows how to use a color sensor in a generic
@@ -56,7 +52,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @TeleOp(name = "Sensor: Color", group = "Sensor")
-
+@Disabled
 public class SensorColor extends LinearOpMode {
 
   /** The colorSensor field will contain a reference to our color sensor hardware object */
@@ -202,4 +198,3 @@ public class SensorColor extends LinearOpMode {
     }
   }
 }
-
