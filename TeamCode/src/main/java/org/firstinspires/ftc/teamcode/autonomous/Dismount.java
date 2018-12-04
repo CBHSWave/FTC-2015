@@ -19,12 +19,17 @@ public class Dismount extends Auto {
 
     @Override
     public void run() throws InterruptedException {
-        robot.knock.ifPresent(knock -> knock.setPosition(OurBot.UNLOCKED));
-        sleep(OurBot.LOCK_DELAY);
-        robot.winch.ifPresent(winch -> winch.setPower(OurBot.DOWN_SPEED));
-        sleep(100);
-        robot.winch.ifPresent(winch -> winch.setPower(0));
-        sleep(5000);
-        AutoUtil.stopMotors((DcMotor[]) robot.motors.toArray());
+        detach(this);
+    }
+
+    public static void detach(Auto opmode) {
+        opmode.robot.lock.ifPresent(lock -> lock.setPosition(OurBot.UNLOCKED));
+        opmode.sleep(OurBot.LOCK_DELAY);
+        opmode.robot.winch.ifPresent(winch -> winch.setPower(0.1));
+        opmode.sleep(100);
+        opmode.robot.winch.ifPresent(winch -> winch.setPower(0));
+        opmode.sleep(5000);
+
+        AutoUtil.stopMotors((DcMotor[]) opmode.robot.motors.toArray());
     }
 }

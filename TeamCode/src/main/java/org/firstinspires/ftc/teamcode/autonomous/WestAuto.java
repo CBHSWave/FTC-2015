@@ -23,6 +23,7 @@ public class WestAuto extends Auto {
     public void run() throws InterruptedException {
         DcMotor[] motors = GeneralUtil.optArray(robot.fl, robot.fr, robot.bl, robot.br);
 
+        Dismount.detach(this);
 
         double[] northeast = GeneralUtil.polarMecanum(45, 1);
         double[] southeast = GeneralUtil.polarMecanum(-45, 1);
