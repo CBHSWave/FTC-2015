@@ -19,6 +19,7 @@ public class Diamond extends Auto {
 
     @Override
     public void prep() throws InterruptedException {
+        robot = new HardwareBot(hardwareMap);
         robot.mecanum();
     }
 
