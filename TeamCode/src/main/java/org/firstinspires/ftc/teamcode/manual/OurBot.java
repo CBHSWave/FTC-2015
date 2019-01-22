@@ -25,7 +25,7 @@ public class OurBot extends OpMode {
     public static final long LOCK_DELAY = 150;
 
     public static final double KNOCK_UP = 0;
-    public static final double KNOCK_DOWN = 0.8;
+    public static final double KNOCK_DOWN = 0;
 
     public static final double UP_SPEED = 1.0;
     public static final double DOWN_SPEED = -0.5;
@@ -39,12 +39,20 @@ public class OurBot extends OpMode {
          * The init() method of the hardware class does all the work here
          */
         robot = new HardwareBot(hardwareMap);
-        robot.mecanum();
-        robot.knock();
-        robot.winch();
-        robot.lock();
-        robot.lock.ifPresent(lock -> lock.setPosition(LOCKED));
-//        robot.intake();
+        try {
+            robot.mecanum();
+            robot.knock();
+            robot.knock.ifPresent(knock -> {
+                knock.setPosition(-1);
+            });
+
+            robot.winch();
+            robot.lock();
+            robot.lock.ifPresent(lock -> lock.setPosition(LOCKED));
+            robot.intake();
+        } catch (NullPointerException e) {
+            telemetry.addData("NPE", e.toString());
+        }
 //        robot.lift();
 //        robot.flippy();
 
@@ -75,22 +83,15 @@ public class OurBot extends OpMode {
         ManualUtil.drive(robot, gamepad1);
 
         robot.leftIn.ifPresent(leftIn -> robot.rightIn.ifPresent(rightIn -> {
-            if (gamepad1.right_bumper || gamepad1.left_bumper) {
-                rightIn.setPower(-gamepad1.right_trigger);
-                leftIn.setPower(-gamepad1.left_trigger);
-            } else {
-                rightIn.setPower(gamepad1.right_trigger);
-                leftIn.setPower(gamepad1.left_trigger);
-            }
+            rightIn.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+            leftIn.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
         }));
 
         robot.knock.ifPresent(knock -> {
             if (gamepad1.a) {
-                knock.setPosition(KNOCK_DOWN);
+                knock.setPosition(1);
             } else if (gamepad1.b) {
-                knock.setPosition(KNOCK_UP);
-            } else {
-                knock.setPosition(KNOCK_DOWN);
+                knock.setPosition(-1);
             }
         });
 

@@ -15,7 +15,7 @@ public abstract class Auto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         prep();
-        AutoUtil.resetAll(robot);
+//        AutoUtil.resetAll(robot);
         waitForStart();
 
         run();

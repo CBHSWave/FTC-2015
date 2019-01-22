@@ -22,45 +22,52 @@ public class Dismount extends Auto {
 
     @Override
     public void run() throws InterruptedException {
-        detach(this);
+        detachUp(this);
     }
 
-    public static void detach(Auto opmode) {
+    public static void detachGeneral(Auto opmode, double powDuring, double powAfter) {
         opmode.robot.fl.ifPresent(fl ->{
             opmode.robot.fr.ifPresent(fr -> {
                 opmode.robot.bl.ifPresent(bl ->{
                     opmode.robot.br.ifPresent(br -> {
-                        DcMotor[] motors = new DcMotor[]{fl, fr, bl, fr};
+                        DcMotor[] motors = new DcMotor[]{fl, fr, bl, br};
 
-                        double[] northeast = GeneralUtil.polarMecanum(45, 1);
-                        double[] southeast = GeneralUtil.polarMecanum(-45, 1);
-                        double[] southwest = GeneralUtil.polarMecanum(180 + 45, 1);
-                        double[] northwest = GeneralUtil.polarMecanum(180 - 45, 1);
-                        double[] north = GeneralUtil.polarMecanum(0, 1);
-                        double[] south = GeneralUtil.polarMecanum(180, 1);
-                        double[] east = GeneralUtil.polarMecanum(90, 1);
-                        double[] west = GeneralUtil.polarMecanum(270, 0.5);
+                        double[] west = new double[]{0.5, -0.5, -0.5, 0.5};
+                        double[] south = new double[]{1, 1, 1, 1};
 
                         // The actual dismount process of going down
                         opmode.robot.lock.ifPresent(lock -> lock.setPosition(OurBot.UNLOCKED));
                         opmode.sleep(OurBot.LOCK_DELAY);
                         opmode.robot.winch.ifPresent(winch -> winch.setPower(1));
                         opmode.sleep(200);
-                        opmode.robot.winch.ifPresent(winch -> winch.setPower(0));
-                        opmode.sleep(2000);
+                        opmode.robot.winch.ifPresent(winch -> winch.setPower(powDuring));
+                        opmode.sleep(3000);
 
                         AutoUtil.setMotors(west, motors);
-                        opmode.sleep(300);
-                        opmode.robot.winch.ifPresent(winch -> winch.setPower(0.4));
-                        opmode.sleep(300);
+                        opmode.sleep(500);
+                        opmode.robot.winch.ifPresent(winch -> winch.setPower(powAfter));
+                        opmode.sleep(350);
                         opmode.robot.winch.ifPresent(winch -> winch.setPower(0));
                         AutoUtil.setMotors(west, motors);
+                        opmode.sleep(150);
+                        AutoUtil.setMotors(south, motors);
                         opmode.sleep(700);
                         AutoUtil.stopMotors(motors);
                     });
                 });
             });
         });
+    }
 
+    public static void detachUp(Auto opmode) {
+        detachGeneral(opmode, 0, 0.5);
+    }
+
+    public static void detachDown(Auto opmode) {
+        detachGeneral(opmode, 0, -0.6);
+    }
+
+    public static void detachPower(Auto opmode) {
+        detachGeneral(opmode, -0.5, 0);
     }
 }

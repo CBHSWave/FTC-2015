@@ -96,8 +96,8 @@ public class HardwareBot {
         rightIn = Optional.ofNullable(hardwareMap.dcMotor.get("rightIn"));
 
 
-        leftIn.ifPresent(encoderConsumer);
-        rightIn.ifPresent(encoderConsumer);
+        leftIn.ifPresent(noEncoderConsumer);
+        rightIn.ifPresent(noEncoderConsumer);
     }
     // defines motors
     public void mecanum() {
@@ -155,7 +155,10 @@ public class HardwareBot {
     public void knock() {
         knock = Optional.ofNullable(hardwareMap.servo.get("knock"));
 
-        knock.ifPresent(this::setupServo);
+        knock.ifPresent(knock -> {
+            knock.setPosition(-1);
+            servos.add(knock);
+        });
     }
 
     public void lock() {
