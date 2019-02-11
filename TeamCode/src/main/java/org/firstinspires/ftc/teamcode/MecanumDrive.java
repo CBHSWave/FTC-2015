@@ -51,8 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
-@Disabled
+@TeleOp(name="MOKane Drive", group="TeleOp")
 public class MecanumDrive extends OpMode
 {
     // Declare OpMode members.
@@ -81,10 +80,10 @@ public class MecanumDrive extends OpMode
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -118,23 +117,24 @@ public class MecanumDrive extends OpMode
 
 
 
-        // Choose to drive using either Tank Mode, or POV Mode
-        // Comment out the method that's not used.  The default below is POV.
+        // Mecanum drive setup
 
         double xl = gamepad1.left_stick_x;
         double yl = gamepad1.left_stick_y;
+        double xr = gamepad1.right_stick_x;
 
-        flPow = yl + xl;
-        frPow = yl - xl;
-        blPow = yl - xl;
-        brPow = yl + xl;
+        flPow = yl + xl - xr;
+        frPow = yl - xl + xr;
+        blPow = yl - xl - xr;
+        brPow = yl + xl + xr;
 
         //linking the Power to the corresponding Motor
-        
+
         fl.setPower(flPow);
         fr.setPower(frPow);
         bl.setPower(blPow);
         br.setPower(brPow);
+
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
