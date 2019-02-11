@@ -60,7 +60,7 @@ public class MecanumDrive extends OpMode
     private DcMotor fr = null;
     private DcMotor br = null;
     private DcMotor bl = null;
-
+    public DcMotor intake = null
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -76,7 +76,7 @@ public class MecanumDrive extends OpMode
         fr = hardwareMap.get(DcMotor.class, "fr");
         br = hardwareMap.get(DcMotor.class,  "br");
         bl = hardwareMap.get(DcMotor.class, "bl");
-
+        intake = hardwareMap.get(DcMotor.class, "intake")
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -84,6 +84,7 @@ public class MecanumDrive extends OpMode
         br.setDirection(DcMotorSimple.Direction.FORWARD);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -114,7 +115,7 @@ public class MecanumDrive extends OpMode
         double brPow;
         double flPow;
         double frPow;
-
+        double intakePow;
 
 
         // Mecanum drive setup
@@ -122,11 +123,15 @@ public class MecanumDrive extends OpMode
         double xl = gamepad1.left_stick_x;
         double yl = gamepad1.left_stick_y;
         double xr = gamepad1.right_stick_x;
+        double lt = gamepad1.left_trigger;
+        double rt = gamepad1.right_trigger;
+
 
         flPow = yl + xl - xr;
         frPow = yl - xl + xr;
         blPow = yl - xl - xr;
         brPow = yl + xl + xr;
+        intakePow = lt - rt;
 
         //linking the Power to the corresponding Motor
 
@@ -134,7 +139,7 @@ public class MecanumDrive extends OpMode
         fr.setPower(frPow);
         bl.setPower(blPow);
         br.setPower(brPow);
-
+        intake.setPower(intakePow);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
@@ -142,7 +147,7 @@ public class MecanumDrive extends OpMode
         telemetry.addData("fr", frPow);
         telemetry.addData("bl", blPow);
         telemetry.addData("br", brPow);
-
+        telemetry.addData("intake", intakePow)
     }
 
     /*
