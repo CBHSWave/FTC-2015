@@ -56,12 +56,12 @@ public class MecanumDrive extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor fl = null;
-    private DcMotor fr = null;
-    private DcMotor br = null;
-    private DcMotor bl = null;
-    public DcMotor intake = null
-
+    public DcMotor fl = null;
+    public DcMotor fr = null;
+    public DcMotor br = null;
+    public DcMotor bl = null;
+    public DcMotor intake = null;
+    public DcMotor winch = null;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -76,8 +76,8 @@ public class MecanumDrive extends OpMode
         fr = hardwareMap.get(DcMotor.class, "fr");
         br = hardwareMap.get(DcMotor.class,  "br");
         bl = hardwareMap.get(DcMotor.class, "bl");
-        intake = hardwareMap.get(DcMotor.class, "intake")
-
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        winch = hardwareMap.get(DcMotor.class, "")
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
