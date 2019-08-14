@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.HardwareBot;
+import org.firstinspires.ftc.teamcode.manual.HardwareBot;
 
 /**
  * Created by wjackson on 2/20/2018.

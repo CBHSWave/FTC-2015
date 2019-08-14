@@ -1,14 +1,10 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.HardwareBot;
+import org.firstinspires.ftc.teamcode.manual.HardwareBot;
 import org.firstinspires.ftc.teamcode.general.GeneralUtil;
-
-import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * Created by wjackson on 9/18/2018.

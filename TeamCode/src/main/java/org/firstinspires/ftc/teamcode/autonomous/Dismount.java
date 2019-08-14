@@ -3,11 +3,8 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.HardwareBot;
-import org.firstinspires.ftc.teamcode.general.GeneralUtil;
+import org.firstinspires.ftc.teamcode.manual.HardwareBot;
 import org.firstinspires.ftc.teamcode.manual.OurBot;
-
-import java.util.Optional;
 
 @Autonomous(name="Dismount", group="Auto")
 public class Dismount extends Auto {

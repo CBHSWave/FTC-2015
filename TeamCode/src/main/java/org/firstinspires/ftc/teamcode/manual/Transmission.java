@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.manual;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.HardwareBot;
-
 /**
  * Created by wjackson on 9/28/2018.
  */

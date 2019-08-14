@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.HardwareBot;
-
 import static java.lang.Thread.sleep;
 
 @TeleOp(name="OurBot", group="Manual")

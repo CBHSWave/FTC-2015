@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.manual;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.HardwareBot;
 import org.firstinspires.ftc.teamcode.general.GeneralUtil;
 
 /**

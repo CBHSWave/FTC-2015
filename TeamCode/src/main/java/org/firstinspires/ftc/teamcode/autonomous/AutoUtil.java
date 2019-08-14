@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.HardwareBot;
+import org.firstinspires.ftc.teamcode.manual.HardwareBot;
 import org.firstinspires.ftc.teamcode.general.Call;
 
 import java.util.HashMap;
