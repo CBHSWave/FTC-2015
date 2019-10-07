@@ -16,9 +16,9 @@ public class AutoBot extends Auto {
 
         robot.mecanum();
 
-        robot.winch();
+        robot.arm();
 
-        robot.knock();
+        robot.block();
     }
 
     @Override
@@ -35,12 +35,12 @@ public class AutoBot extends Auto {
         double[] east = GeneralUtil.polarMecanum(90, 1);
         double[] west = GeneralUtil.polarMecanum(270, 1);
 
-        robot.winch.ifPresent(winch -> {
-            winch.setPower(-0.2);
+        robot.arm.ifPresent(arm -> {
+            arm.setPower(-0.2);
             sleep(100);
-            winch.setPower(0.2);
+            arm.setPower(0.2);
             sleep(100);
-            winch.setPower(0);
+            arm.setPower(0);
         });
 
         AutoUtil.setMotors(east, motors);

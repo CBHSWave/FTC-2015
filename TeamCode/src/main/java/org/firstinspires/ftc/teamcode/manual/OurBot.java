@@ -22,8 +22,8 @@ public class OurBot extends OpMode {
     // Given in milliseconds
     public static final long LOCK_DELAY = 150;
 
-    public static final double KNOCK_UP = 0;
-    public static final double KNOCK_DOWN = 0;
+    public static final double Block_UP = 0;
+    public static final double Block_DOWN = 0;
 
     public static final double UP_SPEED = 1.0;
     public static final double DOWN_SPEED = -0.5;
@@ -39,12 +39,12 @@ public class OurBot extends OpMode {
         robot = new HardwareBot(hardwareMap);
         try {
             robot.mecanum();
-            robot.knock();
-            robot.knock.ifPresent(knock -> {
-                knock.setPosition(-1);
+            robot.block();
+            robot.block.ifPresent(block -> {
+                block.setPosition(-1);
             });
 
-            robot.winch();
+            robot.arm();
             robot.lock();
             robot.lock.ifPresent(lock -> lock.setPosition(LOCKED));
             robot.intake();
@@ -85,24 +85,24 @@ public class OurBot extends OpMode {
             leftIn.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
         }));
 
-        robot.knock.ifPresent(knock -> {
+        robot.block.ifPresent(block -> {
             if (gamepad1.a) {
-                knock.setPosition(1);
+                block.setPosition(1);
             } else if (gamepad1.b) {
-                knock.setPosition(-1);
+                block.setPosition(-1);
             }
         });
 
-        robot.winch.ifPresent(winch -> robot.lock.ifPresent(lock -> {
+        robot.arm.ifPresent(arm -> robot.lock.ifPresent(lock -> {
             if (gamepad1.dpad_up) {
                 doLock(lock);
 
-                winch.setPower(UP_SPEED);
+                arm.setPower(UP_SPEED);
             } else if (gamepad1.dpad_down) {
                 doLock(lock);
-                winch.setPower(DOWN_SPEED);
+                arm.setPower(DOWN_SPEED);
             } else {
-                winch.setPower(0);
+                arm.setPower(0);
                 if (gamepad1.right_bumper) {
                     lock.setPosition(UNLOCKED);
                 } else {

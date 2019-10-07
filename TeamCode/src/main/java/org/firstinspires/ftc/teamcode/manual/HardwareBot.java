@@ -36,13 +36,13 @@ public class HardwareBot {
     public Optional<DcMotor> bl = Optional.empty();
 
     // Winch
-    public Optional<DcMotor> winch = Optional.empty();
+    public Optional<DcMotor> arm = Optional.empty();
 
     // Intake motors
     public Optional<DcMotor> leftIn = Optional.empty();
     public Optional<DcMotor> rightIn = Optional.empty();
 
-    public Optional<Servo> knock = Optional.empty();
+    public Optional<Servo> block = Optional.empty();
     public Optional<Servo> lock = Optional.empty();
 
 
@@ -136,9 +136,9 @@ public class HardwareBot {
         transDrive();
     }
 
-    public void winch() {
-        winch = Optional.ofNullable(hardwareMap.dcMotor.get("winch"));
-        winch.ifPresent(noEncoderConsumer);
+    public void arm() {
+        arm = Optional.ofNullable(hardwareMap.dcMotor.get("arm"));
+        arm.ifPresent(noEncoderConsumer);
    }
 
     public void normalDrive() {
@@ -152,12 +152,12 @@ public class HardwareBot {
         rightMotor.ifPresent(encoderConsumer);
     }
 
-    public void knock() {
-        knock = Optional.ofNullable(hardwareMap.servo.get("knock"));
+    public void block() {
+        block = Optional.ofNullable(hardwareMap.servo.get("block"));
 
-        knock.ifPresent(knock -> {
-            knock.setPosition(-1);
-            servos.add(knock);
+        block.ifPresent(block -> {
+            block.setPosition(-1);
+            servos.add(block);
         });
     }
 
