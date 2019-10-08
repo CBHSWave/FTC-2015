@@ -12,9 +12,9 @@ public class Dismount extends Auto {
     public void prep() throws InterruptedException {
         robot = new HardwareBot(hardwareMap);
         robot.mecanum();
-        robot.winch();
-        robot.lock();
-        robot.knock();
+        robot.arm();
+        robot.block();
+        robot.vaughn();
     }
 
     @Override
@@ -34,16 +34,16 @@ public class Dismount extends Auto {
                         double[] east = new double[]{-1, 1, 1, -1};
 
                         // The actual dismount process of going down
-                        opmode.robot.lock.ifPresent(lock -> lock.setPosition(OurBot.UNLOCKED));
+                        opmode.robot.block.ifPresent(lock -> lock.setPosition(OurBot.UNLOCKED));
                         opmode.sleep(OurBot.LOCK_DELAY);
-                        opmode.robot.winch.ifPresent(winch -> winch.setPower(1));
+                        opmode.robot.arm.ifPresent(winch -> winch.setPower(1));
                         opmode.sleep(200);
-                        opmode.robot.winch.ifPresent(winch -> winch.setPower(powDuring));
+                        opmode.robot.arm.ifPresent(winch -> winch.setPower(powDuring));
                         opmode.sleep(3000);
 
                         AutoUtil.setMotors(east, motors);
                         opmode.sleep(200);
-                        opmode.robot.winch.ifPresent(winch -> winch.setPower(powAfter));
+                        opmode.robot.arm.ifPresent(winch -> winch.setPower(powAfter));
                         AutoUtil.stopMotors(motors);
                         opmode.sleep(350);
                         opmode.robot.winch.ifPresent(winch -> winch.setPower(0));

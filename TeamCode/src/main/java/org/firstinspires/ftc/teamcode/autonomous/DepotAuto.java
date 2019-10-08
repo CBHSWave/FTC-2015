@@ -16,10 +16,9 @@ public class DepotAuto extends Auto {
         robot = new HardwareBot(hardwareMap);
 
         robot.mecanum();
-        robot.winch();
-        robot.knock();
-
-        robot.knock();
+        robot.arm();
+        robot.vaughn();
+        robot.vaughn();
 
     }
 
@@ -45,18 +44,18 @@ public class DepotAuto extends Auto {
                         double[] west = new double[]{0.5, -0.5, -0.5, 0.5};
                         double[] south = new double[]{1, 1, 1, 1};
                         // The actual dismount process of going down1
-                        robot.lock.ifPresent(lock -> lock.setPosition(OurBot.UNLOCKED));
+                        robot.block.ifPresent(lock -> lock.setPosition(OurBot.UNLOCKED));
                         sleep(OurBot.LOCK_DELAY);
-                        robot.winch.ifPresent(winch -> winch.setPower(1));
+                        robot.arm.ifPresent(winch -> winch.setPower(1));
                         sleep(150);
-                        robot.winch.ifPresent(winch -> winch.setPower(0));
+                        robot.arm.ifPresent(winch -> winch.setPower(0));
                         sleep(3000);
 
                         AutoUtil.setMotors(west, motors);
                         sleep(500);
-                        robot.winch.ifPresent(winch -> winch.setPower(0.5));
+                        robot.arm.ifPresent(winch -> winch.setPower(0.5));
                         sleep(350);
-                        robot.winch.ifPresent(winch -> winch.setPower(0));
+                        robot.arm.ifPresent(winch -> winch.setPower(0));
                         AutoUtil.setMotors(west, motors);
                         sleep(150);
                         AutoUtil.stopMotors(motors);
@@ -78,16 +77,16 @@ public class DepotAuto extends Auto {
                         AutoUtil.setMotors(north, motors);
                         sleep(300);
                         AutoUtil.stopMotors(motors);
-                        robot.knock.ifPresent(knock -> {
-                            knock.setPosition(1.0);
+                        robot.vaughn.ifPresent(vaughn -> {
+                            vaughn.setPosition(1.0);
                             sleep(600);
-                            knock.setPosition(-1);
+                            vaughn.setPosition(-1);
                             sleep(600);
-                            knock.setPosition(1.0);
+                            vaughn.setPosition(1.0);
                             sleep(600);
-                            knock.setPosition(-1);
+                            vaughn.setPosition(-1);
                             sleep(600);
-                            knock.setPosition(1.0);
+                            vaughn.setPosition(1.0);
                             sleep(600);
                         });
                         AutoUtil.setMotors(south, motors);
