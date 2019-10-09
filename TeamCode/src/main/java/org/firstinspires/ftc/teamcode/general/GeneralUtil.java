@@ -22,10 +22,10 @@ public class GeneralUtil {
     public static double[] cartesianMecanum(double x, double y) {
         // Assign the values for the different powers
         // You can find these values online (check the FTC subreddit)
-        double flPow = y - x;
-        double frPow = y + x;
-        double blPow = y + x;
-        double brPow = y - x;
+        double flPow = -y - x;
+        double frPow = -y + x;
+        double blPow = -y + x;
+        double brPow = -y - x;
         return new double[]{flPow, frPow, blPow, brPow};
     }
 

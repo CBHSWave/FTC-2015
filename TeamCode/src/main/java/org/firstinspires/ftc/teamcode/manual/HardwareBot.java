@@ -35,15 +35,14 @@ public class HardwareBot {
     public Optional<DcMotor> br = Optional.empty();
     public Optional<DcMotor> bl = Optional.empty();
 
-    // Winch
+    // arm
     public Optional<DcMotor> arm = Optional.empty();
 
-    // Intake motors
-    public Optional<DcMotor> leftIn = Optional.empty();
-    public Optional<DcMotor> rightIn = Optional.empty();
+    // skystone
+    public Optional<Servo> vaughn = Optional.empty();
 
+    //block holder
     public Optional<Servo> block = Optional.empty();
-    public Optional<Servo> lock = Optional.empty();
 
 
     // Transmission functionality
@@ -90,15 +89,6 @@ public class HardwareBot {
         return Optional.ofNullable(motor);
     }
 
-    public void intake() {
-        leftIn = Optional.ofNullable(hardwareMap.dcMotor.get("leftIn"));
-        leftIn.ifPresent(m -> m.setDirection(DcMotorSimple.Direction.REVERSE));
-        rightIn = Optional.ofNullable(hardwareMap.dcMotor.get("rightIn"));
-
-
-        leftIn.ifPresent(noEncoderConsumer);
-        rightIn.ifPresent(noEncoderConsumer);
-    }
     // defines motors
     public void mecanum() {
         fr = Optional.ofNullable(hardwareMap.dcMotor.get("fr"));
@@ -152,19 +142,19 @@ public class HardwareBot {
         rightMotor.ifPresent(encoderConsumer);
     }
 
-    public void block() {
-        block = Optional.ofNullable(hardwareMap.servo.get("block"));
+    public void vaughn() {
+        vaughn = Optional.ofNullable(hardwareMap.servo.get("vaughn"));
 
-        block.ifPresent(block -> {
-            block.setPosition(-1);
-            servos.add(block);
+        vaughn.ifPresent(vaughn -> {
+            vaughn.setPosition(-1);
+            servos.add(vaughn);
         });
     }
 
-    public void lock() {
-        lock = Optional.ofNullable(hardwareMap.servo.get("lock"));
+    public void block() {
+        block = Optional.ofNullable(hardwareMap.servo.get("block"));
 
-        lock.ifPresent(this::setupServo);
+        block.ifPresent(this::setupServo);
     }
 
     public void motorTelemetry(Telemetry telemetry) {

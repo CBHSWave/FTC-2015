@@ -34,19 +34,18 @@ public class Dismount extends Auto {
                         double[] east = new double[]{-1, 1, 1, -1};
 
                         // The actual dismount process of going down
-                        opmode.robot.block.ifPresent(lock -> lock.setPosition(OurBot.UNLOCKED));
                         opmode.sleep(OurBot.LOCK_DELAY);
-                        opmode.robot.arm.ifPresent(winch -> winch.setPower(1));
+                        opmode.robot.arm.ifPresent(arm -> arm.setPower(1));
                         opmode.sleep(200);
-                        opmode.robot.arm.ifPresent(winch -> winch.setPower(powDuring));
+                        opmode.robot.arm.ifPresent(arm -> arm.setPower(powDuring));
                         opmode.sleep(3000);
 
                         AutoUtil.setMotors(east, motors);
                         opmode.sleep(200);
-                        opmode.robot.arm.ifPresent(winch -> winch.setPower(powAfter));
+                        opmode.robot.arm.ifPresent(arm -> arm.setPower(powAfter));
                         AutoUtil.stopMotors(motors);
                         opmode.sleep(350);
-                        opmode.robot.winch.ifPresent(winch -> winch.setPower(0));
+                        opmode.robot.arm.ifPresent(arm -> arm.setPower(0));
                         AutoUtil.setMotors(south, motors);
                         opmode.sleep(700);
                         AutoUtil.stopMotors(motors);
