@@ -72,12 +72,19 @@ public class OurBot extends OpMode {
 
         robot.vaughn.ifPresent(vaughn -> {
             if (gamepad1.a) {
-                vaughn.setPosition(1);
+                vaughn.setPosition(.5);
             } else if (gamepad1.b) {
-                vaughn.setPosition(-1);
+                vaughn.setPosition(0);
             }
         });
 
+        robot.block.ifPresent(block -> {
+            if (gamepad1.x) {
+                block.setPosition(.5);
+            } else if (gamepad1.y) {
+                block.setPosition(0);
+            }
+        });
         robot.arm.ifPresent(arm -> {
             arm.setPower(gamepad1.right_trigger / 2 - gamepad1.left_trigger / 2);
         });
