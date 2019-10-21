@@ -34,7 +34,7 @@ public class Dismount extends Auto {
                         double[] east = new double[]{-1, 1, 1, -1};
 
                         // The actual dismount process of going down
-                        opmode.sleep(OurBot.LOCK_DELAY);
+
                         opmode.robot.arm.ifPresent(arm -> arm.setPower(1));
                         opmode.sleep(200);
                         opmode.robot.arm.ifPresent(arm -> arm.setPower(powDuring));

@@ -48,12 +48,6 @@ public class CraterAuto extends Auto {
                         double[] south = new double[]{1, 1, 1, 1};
 
                         // The actual dismount process of going down
-                        robot.block.ifPresent(lock -> lock.setPosition(OurBot.UNLOCKED));
-                        sleep(OurBot.LOCK_DELAY);
-                        robot.arm.ifPresent(winch -> winch.setPower(1));
-                        sleep(200);
-                        robot.arm.ifPresent(winch -> winch.setPower(0));
-                        sleep(3000);
 
                         AutoUtil.setMotors(west, motors);
                         sleep(500);
