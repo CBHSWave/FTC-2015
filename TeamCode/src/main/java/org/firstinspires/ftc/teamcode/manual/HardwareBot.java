@@ -44,6 +44,7 @@ public class HardwareBot {
     //block holder
     public Optional<Servo> block = Optional.empty();
 
+    public final double BLOCK_STOP=0.00;
 
     // Transmission functionality
     public Optional<Servo> transGear = Optional.empty();
@@ -154,7 +155,10 @@ public class HardwareBot {
     public void block() {
         block = Optional.ofNullable(hardwareMap.servo.get("block"));
 
-        block.ifPresent(this::setupServo);
+        block.ifPresent(block -> {
+            block.setPosition(BLOCK_STOP);
+            servos.add(block);
+        });
     }
 
     public void motorTelemetry(Telemetry telemetry) {
