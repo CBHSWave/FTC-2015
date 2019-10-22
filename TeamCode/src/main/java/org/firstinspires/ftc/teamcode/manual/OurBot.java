@@ -15,10 +15,6 @@ public class OurBot extends OpMode {
     HardwareBot robot; // use the class created to define a Pushbot's hardware
     // could also use HardwarePushbotMatrix class.
 
-    public final double BLOCK_IN=0.50;
-    public final double BLOCK_OUT=-0.50;
-    public final double BLOCK_STOP=0.00;
-
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -66,25 +62,23 @@ public class OurBot extends OpMode {
 
         robot.vaughn.ifPresent(vaughn -> {
             if (gamepad1.a) {
-                vaughn.setPosition(.5);
+                vaughn.setPosition(1);
             } else if (gamepad1.b) {
                 vaughn.setPosition(0);
             }
         });
 
         robot.block.ifPresent(block -> {
-            if (gamepad1.x) {
-                block.setDirection(Servo.Direction.FORWARD);
-            } else if (gamepad1.y) {
-                block.setDirection(Servo.Direction.REVERSE);
-            } else {
-                block.setPosition(BLOCK_STOP);
-            }
+           if (gamepad1.x) {
+               block.setPosition(.5);
+           } else if (gamepad1.y) {
+               block.setPosition(0);
+           }
         });
+
         robot.arm.ifPresent(arm -> {
             arm.setPower(gamepad1.right_trigger / 2 - gamepad1.left_trigger / 2);
         });
-        ;
 
         robot.allTelemetry(telemetry);
         telemetry.update();
