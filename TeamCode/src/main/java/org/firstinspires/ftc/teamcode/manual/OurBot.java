@@ -20,6 +20,7 @@ public class OurBot extends OpMode {
      */
     @Override
     public void init() {
+
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
@@ -29,6 +30,10 @@ public class OurBot extends OpMode {
             robot.vaughn();
             robot.vaughn.ifPresent(vaughn -> {
                 vaughn.setPosition(-1);
+            });
+            robot.block();
+            robot.block.ifPresent(block -> {
+                block.setPosition(0);
             });
             robot.arm();
         } catch (NullPointerException e) {
@@ -60,32 +65,29 @@ public class OurBot extends OpMode {
     public void loop() {
         ManualUtil.drive(robot, gamepad1);
 
-        robot.vaughn.ifPresent(vaughn -> {
-            if (gamepad1.a) {
-                vaughn.setPosition(1);
-            } else if (gamepad1.b) {
-                vaughn.setPosition(0);
+        robot.block.ifPresent(block -> {
+            if (gamepad1.dpad_down) {
+                block.setPosition(1.0);
+            } else if (gamepad1.dpad_up) {
+                block.setPosition(0.0);
             }
         });
-
-        robot.block.ifPresent(block -> {
-           if (gamepad1.x) {
-               block.setPosition(.5);
-           } else if (gamepad1.y) {
-               block.setPosition(0);
-           }
-        });
+        robot.vaughn.ifPresent(vaughn -> {
+            if (gamepad1.left_bumper) {
+            vaughn.setPosition(.8);
+            } else if (gamepad1.right_bumper) {
+            vaughn.setPosition(0);
+        }
+    });
 
         robot.arm.ifPresent(arm -> {
-            arm.setPower(gamepad1.right_trigger / 2 - gamepad1.left_trigger / 2);
+            arm.setPower((gamepad1.right_trigger - gamepad1.left_trigger )/ 2);
         });
 
         robot.allTelemetry(telemetry);
         telemetry.update();
 
     }
-
-    ;
 
     /*
      * Code to run ONCE after the driver hits STOP

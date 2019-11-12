@@ -44,8 +44,6 @@ public class HardwareBot {
     //block holder
     public Optional<Servo> block = Optional.empty();
 
-    public final double BLOCK_STOP=0.00;
-
     // Transmission functionality
     public Optional<Servo> transGear = Optional.empty();
     public Optional<DcMotor> transDrive = Optional.empty();
@@ -129,7 +127,7 @@ public class HardwareBot {
 
     public void arm() {
         arm = Optional.ofNullable(hardwareMap.dcMotor.get("arm"));
-        arm.ifPresent(noEncoderConsumer);
+        arm.ifPresent(encoderConsumer);
    }
 
     public void normalDrive() {
@@ -145,20 +143,20 @@ public class HardwareBot {
 
     public void vaughn() {
         vaughn = Optional.ofNullable(hardwareMap.servo.get("vaughn"));
-
         vaughn.ifPresent(vaughn -> {
-            vaughn.setPosition(-1);
+            vaughn.setPosition(0);
             servos.add(vaughn);
         });
     }
 
     public void block() {
         block = Optional.ofNullable(hardwareMap.servo.get("block"));
-
         block.ifPresent(block -> {
-            block.setPosition(BLOCK_STOP);
+            block.setPosition(0);
             servos.add(block);
         });
+
+
     }
 
     public void motorTelemetry(Telemetry telemetry) {
