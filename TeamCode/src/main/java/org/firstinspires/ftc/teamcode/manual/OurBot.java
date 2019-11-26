@@ -81,7 +81,7 @@ public class OurBot extends OpMode {
     });
 
         robot.arm.ifPresent(arm -> {
-            arm.setPower((gamepad1.right_trigger - gamepad1.left_trigger )/ 2);
+            arm.setPower((gamepad1.right_trigger - gamepad1.left_trigger ) / 10);
         });
 
         robot.allTelemetry(telemetry);
