@@ -44,6 +44,9 @@ public class HardwareBot {
     //block holder
     public Optional<Servo> block = Optional.empty();
 
+    // Autonomous arm
+    public Optional<Servo> armA = Optional.empty();
+
     // Transmission functionality
     public Optional<Servo> transGear = Optional.empty();
     public Optional<DcMotor> transDrive = Optional.empty();
@@ -141,11 +144,11 @@ public class HardwareBot {
         rightMotor.ifPresent(encoderConsumer);
     }
 
-    public void vaughn() {
-        vaughn = Optional.ofNullable(hardwareMap.servo.get("vaughn"));
-        vaughn.ifPresent(vaughn -> {
-            vaughn.setPosition(0);
-            servos.add(vaughn);
+    public void armA() {
+        armA = Optional.ofNullable(hardwareMap.servo.get("armA"));
+        armA.ifPresent(armA -> {
+            armA.setPosition(1);
+            servos.add(armA);
         });
     }
 
@@ -155,9 +158,15 @@ public class HardwareBot {
             block.setPosition(0);
             servos.add(block);
         });
-
-
     }
+    public void vaughn() {
+        vaughn = Optional.ofNullable(hardwareMap.servo.get("vaughn"));
+        vaughn.ifPresent(vaughn -> {
+            vaughn.setPosition(0);
+            servos.add(vaughn);
+        });
+    }
+
 
     public void motorTelemetry(Telemetry telemetry) {
         for (DcMotor motor : hardwareMap.dcMotor) {

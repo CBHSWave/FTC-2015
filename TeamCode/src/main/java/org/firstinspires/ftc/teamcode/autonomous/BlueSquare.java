@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.manual.HardwareBot;
             robot.block();
             robot.arm();
             robot.vaughn();
+            robot.armA();
         }
 
         @Override
@@ -36,27 +37,59 @@ import org.firstinspires.ftc.teamcode.manual.HardwareBot;
                             double[] southeast = GeneralUtil.polarMecanum(-45, 1);
                             double[] southwest = GeneralUtil.polarMecanum(180 + 45, 1);
                             double[] northwest = GeneralUtil.polarMecanum(180 - 45, 1);
-//                        double[] north = GeneralUtil.polarMecanum(0, 1);/
-                            double[] east = new double[]{-1, 1, 1, -1};
+                            double[] east = new double[]{-0.5, 0.5, 0.5, -0.5};
                             double[] west = new double[]{0.5, -0.5, -0.5, 0.5};
                             double[] south = new double[]{-1,-1, -1, -1};
-                            double[] north = new double[]{1, 1, 1, 1};
-                            double[] rotate = new double[] {1, -1, 1, -1};
+                            double[] north = new double[]{ 0.5, 0.5, 0.5, 0.5};
+                            double[] rotate = new double[] {0.5, -0.5, 0.5, -0.5};
                             double[] rotate2 = new double[] {-1, 1, -1, 1};
+                            robot.armA.ifPresent(armA -> armA.setPosition(1));
 
 
 
-                            // The actual dismount process of going down
-
+                            // The actual process
                             AutoUtil.setMotors(east, motors);
-                            sleep(1250);
-                            AutoUtil.setMotors(south , motors);
-                            sleep(20);
+                            sleep(2300);
                             AutoUtil.stopMotors(motors);
-                            sleep(10);
-                            AutoUtil.setMotors(rotate, motors);
                             sleep(500);
-                            AutoUtil.setMotors(east, motors);
+                            robot.armA.ifPresent(armA -> armA.setPosition(.25));
+                            sleep(125);
+                            robot.arm.ifPresent(arm ->{
+                                arm.setPower(.5);
+                                sleep(400);
+                                arm.setPower(0);
+                                sleep(100);
+                            });
+                            AutoUtil.setMotors( west , motors );
+                            sleep(900);
+                            AutoUtil.stopMotors(motors);
+                            sleep(100);
+                            AutoUtil.setMotors(rotate, motors);
+                            sleep(70);
+                            AutoUtil.stopMotors(motors);
+                            sleep(100);
+                            AutoUtil.setMotors(north , motors);
+                            sleep(2250);
+                            AutoUtil.stopMotors(motors);
+                            sleep(100);
+                            AutoUtil.setMotors(rotate , motors);
+                            sleep(10);
+                            AutoUtil.stopMotors(motors);
+                            sleep(100);
+                            robot.armA.ifPresent(armA -> armA.setPosition(1));
+                            sleep(500);
+                            robot.arm.ifPresent(arm ->{
+                                arm.setPower(-.5);
+                                sleep(750);
+                                arm.setPower(0);
+                                sleep(100);
+                            });
+                            AutoUtil.setMotors(rotate , motors);
+                            sleep(1100);
+                            AutoUtil.stopMotors(motors);
+                            sleep(100);
+                            AutoUtil.setMotors(west,motors);
+                            sleep(750);
                         });
                     });
                 });
