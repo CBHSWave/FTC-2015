@@ -100,10 +100,10 @@ public class ManualUtil {
                                     DcMotor backleft, DcMotor backright) {
         // {flPow, frPow, blPow, brPow}
         double[] powers = GeneralUtil.cartesianMecanum(pad.left_stick_x, pad.left_stick_y);
-//        double flPow = -pad.left_stick_y - pad.left_stick_x;
-//        double frPow = -pad.left_stick_y + pad.left_stick_x;
-//        double blPow = -pad.left_stick_y + pad.left_stick_x;
-//        double brPow = -pad.left_stick_y - pad.left_stick_x;
+        //double flPow = -pad.left_stick_y - pad.left_stick_x;
+        //double frPow = -pad.left_stick_y + pad.left_stick_x;
+        //double blPow = -pad.left_stick_y + pad.left_stick_x;
+        //double brPow = -pad.left_stick_y - pad.left_stick_x;
 
         // Scale the values, half them, then set the power
         frontleft.setPower(scale(powers[0]));

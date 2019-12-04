@@ -61,8 +61,7 @@ public class DepotAuto extends Auto {
 
                         // Go Code
                         AutoUtil.setMotors(rotate, motors);
-                        sleep(CraterAuto.RTime);
-                        AutoUtil.stopMotors(motors);
+                        
 
                         AutoUtil.setMotors(south, motors);
                         sleep(540);
