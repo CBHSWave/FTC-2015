@@ -49,14 +49,14 @@ import org.firstinspires.ftc.teamcode.manual.HardwareBot;
 
                             // The actual process
                             AutoUtil.setMotors(east, motors);
-                            sleep(2300);
+                            sleep(2450);
                             AutoUtil.stopMotors(motors);
                             sleep(500);
                             robot.armA.ifPresent(armA -> armA.setPosition(.25));
                             sleep(125);
                             robot.arm.ifPresent(arm ->{
                                 arm.setPower(.5);
-                                sleep(400);
+                                sleep(600);
                                 arm.setPower(0);
                                 sleep(100);
                             });
@@ -65,7 +65,7 @@ import org.firstinspires.ftc.teamcode.manual.HardwareBot;
                             AutoUtil.stopMotors(motors);
                             sleep(100);
                             AutoUtil.setMotors(rotate, motors);
-                            sleep(70);
+                            sleep(80);
                             AutoUtil.stopMotors(motors);
                             sleep(100);
                             AutoUtil.setMotors(north , motors);
@@ -80,16 +80,14 @@ import org.firstinspires.ftc.teamcode.manual.HardwareBot;
                             sleep(500);
                             robot.arm.ifPresent(arm ->{
                                 arm.setPower(-.5);
-                                sleep(750);
+                                sleep(1000);
                                 arm.setPower(0);
                                 sleep(100);
                             });
-                            AutoUtil.setMotors(rotate , motors);
-                            sleep(1100);
                             AutoUtil.stopMotors(motors);
                             sleep(100);
                             AutoUtil.setMotors(west,motors);
-                            sleep(750);
+                            sleep(1400);
                         });
                     });
                 });

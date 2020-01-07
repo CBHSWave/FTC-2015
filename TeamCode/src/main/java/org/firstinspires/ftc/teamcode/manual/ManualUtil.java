@@ -98,8 +98,8 @@ public class ManualUtil {
     public static void mecanumDrive(Gamepad pad, double threshold,
                                     DcMotor frontleft, DcMotor frontright,
                                     DcMotor backleft, DcMotor backright) {
-        // {flPow, frPow, blPow, brPow}
-        double[] powers = GeneralUtil.cartesianMecanum(pad.left_stick_x, pad.left_stick_y);
+        //{flPow, frPow, blPow, brPow}
+        double[] powers = GeneralUtil.cartesianMecanum(pad.left_stick_x*4/5, pad.left_stick_y*4/5);
         //double flPow = -pad.left_stick_y - pad.left_stick_x;
         //double frPow = -pad.left_stick_y + pad.left_stick_x;
         //double blPow = -pad.left_stick_y + pad.left_stick_x;
