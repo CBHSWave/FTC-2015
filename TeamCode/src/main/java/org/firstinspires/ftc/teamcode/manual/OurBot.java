@@ -27,15 +27,15 @@ public class OurBot extends OpMode {
         robot = new HardwareBot(hardwareMap);
         try {
             robot.mecanum();
-            robot.vaughn();
-            robot.vaughn.ifPresent(vaughn -> {
-                vaughn.setPosition(-1);
-            });
-            robot.block();
-            robot.block.ifPresent(block -> {
-                block.setPosition(0);
-            });
-            robot.arm();
+            //robot.vaughn();
+            //robot.vaughn.ifPresent(vaughn -> {
+           //     vaughn.setPosition(-1);
+            //});
+            //robot.block();
+            //robot.block.ifPresent(block -> {
+          //      block.setPosition(0);
+            //});
+            //robot.arm();
         } catch (NullPointerException e) {
             telemetry.addData("NPE", e.toString());
         }
@@ -65,24 +65,24 @@ public class OurBot extends OpMode {
     public void loop() {
         ManualUtil.drive(robot, gamepad1);
 
-        robot.block.ifPresent(block -> {
+        /*robot.block.ifPresent(block -> {
             if (gamepad1.dpad_down) {
                 block.setPosition(1.0);
             } else if (gamepad1.dpad_up) {
                 block.setPosition(0.0);
             }
-        });
-        robot.vaughn.ifPresent(vaughn -> {
+        });*/
+        /*robot.vaughn.ifPresent(vaughn -> {
             if (gamepad1.left_bumper) {
             vaughn.setPosition(.8);
             } else if (gamepad1.right_bumper) {
             vaughn.setPosition(0);
-        }
+        }*/
     });
 
-        robot.arm.ifPresent(arm -> {
+        /*robot.arm.ifPresent(arm -> {
             arm.setPower((gamepad1.right_trigger - gamepad1.left_trigger ) / 10);
-        });
+        });*/
 
         robot.allTelemetry(telemetry);
         telemetry.update();
